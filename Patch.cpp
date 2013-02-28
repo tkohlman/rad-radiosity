@@ -1,6 +1,6 @@
 ///
 /// @file Patch.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 31 December 2011
 ///
@@ -22,39 +22,39 @@ int Patch::mNumPatches(0);
 //
 Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) :
         mA(a), mB(b), mC(c), mD(d), mColor(col) {
-    
+
     // Calculate the normal vector
     Vector AB(*mB, *mA);
     Vector BC(*mC, *mB);
-    mPatchNormal = BC^AB;
+    mPatchNormal = crossProduct(BC, AB);
     mPatchNormal.Normalize();
-    
+
     // Calculate the area
     float dAB = mA->DistanceTo(*mB);
     float dBC = mB->DistanceTo(*mC);
     mArea = dAB * dBC;
-    
+
     // Calculate the center point
     Vector AC(*mC, *mA);
     AC.Normalize();
     float dist = sqrt((dAB/2) * (dAB/2) + (dBC/2) * (dBC/2));
     mCenterPoint = (AC * dist).Translate(*mA);
-    
+
     // Emission
     mEmission = col * emission;
-    
+
     // Create the patch line of sight vector
     mViewablePatches = new vector<Patch*>;
-    
+
     // Create the form factor vector
     mFormFactors = new vector<float>;
-    
+
     mReflectance = .85;
-    
+
     mIncidence = Color();
-    
+
     mExidence = mEmission;
-    
+
 }
 
 //
@@ -125,21 +125,21 @@ float Patch::Intersect(Vector v, Point o) {
     // Find the distance from the ray origin to the intersect point
     float distance = 0;
     distance = ( Vector(*mA, o) * mPatchNormal ) / (v * mPatchNormal);
-    
+
     // From the distance, calculate the intersect point
     Point intersect = (v * distance).Translate(o);
-  
+
     // Test to see if the point is inside the rectangle
     Vector CI(intersect, *mC);
     Vector BC(*mB, *mC);
     Vector CD(*mD, *mC);
-    
+
     if (((0 <= (CI * BC)) && ((CI * BC) < (BC * BC)) &&
           (0 <= (CI * CD)) && ((CI * CD) < (CD * CD)))) {
     } else {
         distance = 0;
     }
-    
+
     return distance;
 }
 
@@ -147,12 +147,12 @@ float Patch::Intersect(Vector v, Point o) {
 // Contains
 //
 bool Patch::Contains(Point p) const {
-  
+
     // Test to see if the point is inside the rectangle
     Vector CI(p, *mC);
     Vector BC(*mB, *mC);
     Vector CD(*mD, *mC);
-    
+
     return !(((0 <= (CI * BC)) && ((CI * BC) < (BC * BC)) &&
           (0 <= (CI * CD)) && ((CI * CD) < (CD * CD))));
 }
@@ -194,7 +194,7 @@ void Patch::AddViewablePatch(Patch *patch) {
 
     // Add the patch to the line of sight vector
     mViewablePatches->push_back(patch);
-    
+
     // Add a form factor for this patch in parallel
     mFormFactors->push_back(0);
 }
@@ -203,19 +203,19 @@ void Patch::AddViewablePatch(Patch *patch) {
 // RemoveViewablePatch
 //
 void Patch::RemoveViewablePatch(Patch *patch) {
- 
+
     vector<Patch*>::iterator iter1 = mViewablePatches->begin();
     vector<float>::iterator iter2 = mFormFactors->begin();
-    
+
     for (; iter1 != mViewablePatches->end(); ++iter1) {
-    
+
         // Remove the viewable patch, and its form factor
         if (*iter1 == patch) {
             iter1 = mViewablePatches->erase(iter1);
             break;
         }
     }
-    
+
     // Add a form factor for this patch in parallel
     mFormFactors->pop_back();
 }
@@ -237,9 +237,9 @@ void Patch::UpdateIncidence() {
     // in again.
     mIncidence = Color();
 
-    // For every viewable patch    
+    // For every viewable patch
     for (int index(0); index < mViewablePatches->size(); ++index) {
-        
+
         // Update the patch's incident light
         mIncidence += mViewablePatches->at(index)->mExidence *
             mFormFactors->at(index);
@@ -266,7 +266,7 @@ void Patch::UpdateCornerColors() {
     mA->UpdateColor((mColor * mExidence), mArea);
     mB->UpdateColor((mColor * mExidence), mArea);
     mC->UpdateColor((mColor * mExidence), mArea);
-    mD->UpdateColor((mColor * mExidence), mArea); 
+    mD->UpdateColor((mColor * mExidence), mArea);
 }
 
 }   // namespace Radiosity

@@ -1,6 +1,6 @@
 ///
 /// @file Rectangle.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -17,12 +17,12 @@ namespace Radiosity {
 Rectangle::Rectangle(Point a, Point b, Point c, Point d, Color color,
     float emit) :
     Shape(color), _a(a), _b(b), _c(c), _d(d), emission(emit), mPatches(NULL) {
-    
+
     // calculate the normal vector
     Vector v1(b, a);
     Vector v2(d, a);
-    
-    _normal = v2^v1; // cross product
+
+    _normal = crossProduct(v2, v1); // cross product
 }
 
 // ~Rectangle
@@ -39,22 +39,22 @@ Point* Rectangle::Intersect(Vector v, Point o) {
 
     // Find the distance from the ray origin to the intersect point
     float distance = ( Vector(_a, o) * _normal ) / (v * _normal);
-    
+
     // From the distance, calculate the intersect point
     Point *intersect = new Point((v * distance).Translate(o));
-  
+
     // Test to see if the point is inside the rectangle
     Vector v_test(*intersect, _c);
     Vector v1_test(_b, _c);
     Vector v2_test(_c, _d);
-         
+
     if ( (0 <= (v_test * v1_test)) &&
          ((v_test * v1_test) < (v1_test * v1_test)) &&
          (0 <= (v_test * v2_test)) &&
          ((v_test * v2_test) < (v2_test * v2_test))) {
-        
+
         return intersect;
-        
+
     } else {
         // does not intersect plane within the rectangle
         return NULL;

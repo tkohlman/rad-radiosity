@@ -1,6 +1,6 @@
 ///
 /// @file Vector.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -23,7 +23,7 @@ class Vector {
 
     ///
     /// @name operator<<
-    /// 
+    ///
     /// @description
     /// 	Vector output operator.
     ///
@@ -32,17 +32,23 @@ class Vector {
     /// @return - the output stream
     ///
     friend ostream& operator<<(ostream& os, const Vector& other);
-    
+
     friend inline Vector operator+(const Vector& a, const Vector& b) {
         return Vector(a._x + b._x, a._y + b._y, a._z + b._z);
     }
 
+    friend inline Vector crossProduct(const Vector &v1, const Vector &v2)
+    {
+        return Vector(v1._y * v2._z - v1._z * v2._y,
+                      v1._z * v2._x - v1._x * v2._z,
+                      v1._x * v2._y - v1._y * v2._x);
+    }
 
 public:
 
     ///
     /// @name Vector
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -52,12 +58,12 @@ public:
     /// @return - void
     ///
     Vector(float x, float y, float z);
-    
+
     Vector(const Point &p1, const Point &p2);
 
     ///
     /// @name Vector
-    /// 
+    ///
     /// @description
     /// 	Default constructor
     ///
@@ -67,29 +73,29 @@ public:
 
     ///
     /// @name ~Vector
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
     /// @return - void
-    ///    
+    ///
     ~Vector();
-    
+
     inline Point Translate(const Point &p);
 
     ///
     /// @name Normalize
-    /// 
+    ///
     /// @description
     /// 	Normalizes the vector to a unit length.
     ///
     /// @return - void
-    ///    
+    ///
     inline void Normalize();
-    
+
     ///
     /// @name operator*
-    /// 
+    ///
     /// @description
     /// 	Scalar multiplication operator.
     ///
@@ -97,10 +103,10 @@ public:
     /// @return - Vector multiplied by scalar value
     ///
     inline Vector operator*(const float& scalar) const;
-    
+
     ///
     /// @name operator*
-    /// 
+    ///
     /// @description
     /// 	Dot product operator.
     ///
@@ -110,19 +116,8 @@ public:
     inline float operator*(const Vector& other) const;
 
     ///
-    /// @name operator^
-    /// 
-    /// @description
-    /// 	Cross product operator.
-    ///
-    /// @param other - the second vector
-    /// @return - Vector cross product
-    ///
-    inline Vector operator^(const Vector& other) const;
-    
-    ///
     /// @name operator=
-    /// 
+    ///
     /// @description
     /// 	Equals operator.
     ///
@@ -130,10 +125,10 @@ public:
     /// @return - address of this argument
     ///
     inline Vector& operator=(const Vector& other);
-    
+
     ///
     /// @name operator*=
-    /// 
+    ///
     /// @description
     /// 	Times-equals operator.
     ///
@@ -141,10 +136,10 @@ public:
     /// @return - address of this argument
     ///
     inline Vector& operator*=(float s);
-    
+
     ///
     /// @name operator-
-    /// 
+    ///
     /// @description
     /// 	Negation operator.
     ///
@@ -161,21 +156,21 @@ private:
     ///		The x-axis component of this vector.
     ///
     float _x;
-    
+
     ///
     /// @name _y
     ///
     /// @description
     ///		The y-axis component of this vector.
-    ///    
+    ///
     float _y;
-    
+
     ///
     /// @name _z
     ///
     /// @description
     ///		The z-axis component of this vector.
-    ///    
+    ///
     float _z;
 
 
@@ -200,13 +195,6 @@ inline Vector Vector::operator*(const float& scalar) const {
 // operator*
 inline float Vector::operator*(const Vector& other) const {
     return (_x * other._x + _y * other._y + _z * other._z);
-}
-
-// operator^
-inline Vector Vector::operator^(const Vector& other) const {
-    return Vector(_y * other._z - _z * other._y,
-                  _z * other._x - _x * other._z,
-                  _x * other._y - _y * other._x);
 }
 
 // operator=

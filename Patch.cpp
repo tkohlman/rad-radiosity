@@ -38,7 +38,7 @@ Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) 
     Vector AC(*mC, *mA);
     AC.Normalize();
     float dist = sqrt((dAB/2) * (dAB/2) + (dBC/2) * (dBC/2));
-    mCenterPoint = (AC * dist).Translate(*mA);
+    mCenterPoint = scalarMultiply(AC, dist).Translate(*mA);
 
     // Emission
     mEmission = col * emission;
@@ -101,7 +101,7 @@ void Patch::DrawNormal()
 {
     glColor3f(0, 0, 1);
 
-	Point p = (mPatchNormal * 10).Translate(mCenterPoint);
+	Point p = scalarMultiply(mPatchNormal, 10).Translate(mCenterPoint);
 
 	glLineWidth(5);
 	glBegin(GL_LINES);
@@ -118,25 +118,30 @@ void Patch::DrawNormal()
 float Patch::Intersect(Vector v, Point o) {
 
     // Check if vector is parallel to plane (no intercept)
-    if (v * mPatchNormal == 0) {
+    if (dotProduct(v, mPatchNormal) == 0) {
         return -1;
     }
 
     // Find the distance from the ray origin to the intersect point
     float distance = 0;
-    distance = ( Vector(*mA, o) * mPatchNormal ) / (v * mPatchNormal);
+    distance = dotProduct(Vector(*mA, o), mPatchNormal) / dotProduct(v, mPatchNormal);
 
     // From the distance, calculate the intersect point
-    Point intersect = (v * distance).Translate(o);
+    Point intersect = scalarMultiply(v, distance).Translate(o);
 
     // Test to see if the point is inside the rectangle
     Vector CI(intersect, *mC);
     Vector BC(*mB, *mC);
     Vector CD(*mD, *mC);
 
-    if (((0 <= (CI * BC)) && ((CI * BC) < (BC * BC)) &&
-          (0 <= (CI * CD)) && ((CI * CD) < (CD * CD)))) {
-    } else {
+    if (((0 <= dotProduct(CI, BC)) &&
+        (dotProduct(CI, BC) < dotProduct(BC, BC)) &&
+        (0 <= dotProduct(CI, CD)) &&
+        (dotProduct(CI, CD) < dotProduct(CD, CD))))
+    {
+    }
+    else
+    {
         distance = 0;
     }
 
@@ -153,8 +158,10 @@ bool Patch::Contains(Point p) const {
     Vector BC(*mB, *mC);
     Vector CD(*mD, *mC);
 
-    return !(((0 <= (CI * BC)) && ((CI * BC) < (BC * BC)) &&
-          (0 <= (CI * CD)) && ((CI * CD) < (CD * CD))));
+    return !(((0 <= dotProduct(CI, BC)) &&
+        (dotProduct(CI, BC) < dotProduct(BC, BC)) &&
+        (0 <= dotProduct(CI, CD)) &&
+        (dotProduct(CI, CD) < dotProduct(CD, CD))));
 }
 
 bool Patch::IsFacing(const Patch *other) const
@@ -170,9 +177,9 @@ bool Patch::IsFacing(const Patch *other) const
 	v12.Normalize();
 	v21.Normalize();
 
-	float dp1 = v12 * mPatchNormal;
-	float dp2 = v21 * other->mPatchNormal;
-	float dp = mPatchNormal * other->mPatchNormal;
+	float dp1 = dotProduct(v12, mPatchNormal);
+	float dp2 = dotProduct(v21, other->mPatchNormal);
+	float dp = dotProduct(mPatchNormal, other->mPatchNormal);
 
 	if ( !(
 				((dp == -1) && (dp1 < 0 || dp2 < 0))

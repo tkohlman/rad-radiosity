@@ -12,6 +12,7 @@
 ///
 
 #include "Hemicube.h"
+using namespace Radiosity;
 
 namespace Radiosity {
 
@@ -82,41 +83,41 @@ void Hemicube::TraceHemicube(Patch *patch) {
     v1.Normalize();
     v2.Normalize();
 
-    Vector v3 = -v1;
-    Vector v4 = -v2;
+    Vector v3 = negateVector(v1);
+    Vector v4 = negateVector(v2);
 
     // The distance from the center to the corners on the same plane is equal
     // to the square root of one-half the width of the hemicube.
     float distance = sqrt(WIDTH/2);
 
     // Create the 8 points that define the cube.
-    Point p1 = (v1 * distance).Translate(origin);
-	Point p2 = (v2 * distance).Translate(origin);
-	Point p3 = (v1 * -distance).Translate(origin);
-	Point p4 = (v2 * -distance).Translate(origin);
-	Point p5 = (normal * (WIDTH/2)).Translate(p1);
-	Point p6 = (normal * (WIDTH/2)).Translate(p2);
-	Point p7 = (normal * (WIDTH/2)).Translate(p3);
-	Point p8 = (normal * (WIDTH/2)).Translate(p4);
+    Point p1 = scalarMultiply(v1, distance).Translate(origin);
+	Point p2 = scalarMultiply(v2, distance).Translate(origin);
+	Point p3 = scalarMultiply(v1, -distance).Translate(origin);
+	Point p4 = scalarMultiply(v2, -distance).Translate(origin);
+	Point p5 = scalarMultiply(normal, (WIDTH/2)).Translate(p1);
+	Point p6 = scalarMultiply(normal, (WIDTH/2)).Translate(p2);
+	Point p7 = scalarMultiply(normal, (WIDTH/2)).Translate(p3);
+	Point p8 = scalarMultiply(normal, (WIDTH/2)).Translate(p4);
 
     // The vector that is normal to the left face is the sum of the vectors
     // that extend from the center point to the two corners of the left face.
-    Vector left_normal = v1 + v4;
+    Vector left_normal = add(v1, v4);
     left_normal.Normalize();
 
     // The vector that is normal to the top face is the sum of the vectors
     // that extend from the center point to the two corners of the top face.
-    Vector top_normal = v1 + v2;
+    Vector top_normal = add(v1, v2);
     top_normal.Normalize();
 
     // The vector that is normal to the right face is the sum of the vectors
     // that extend from the center point to the two corners of the right face.
-    Vector right_normal = v2 + v3;
+    Vector right_normal = add(v2, v3);
     right_normal.Normalize();
 
     // The vector that is normal to the bottom face is the sum of the vectors
     // that extend from the center point to the two corners of the bottom face.
-    Vector bottom_normal = v3 + v4;
+    Vector bottom_normal = add(v3, v4);
     bottom_normal.Normalize();
 
     // The vector that is normal to the front face is equal to the normal
@@ -132,11 +133,11 @@ void Hemicube::TraceHemicube(Patch *patch) {
         mTopMultiplier);
 
     // Trace right face
-    TraceFace(patch, p6, right_normal, bottom_normal, -front_normal,
+    TraceFace(patch, p6, right_normal, bottom_normal, negateVector(front_normal),
         mRightMultiplier);
 
     // Trace bottom face
-    TraceFace(patch, p8, bottom_normal, -front_normal, right_normal,
+    TraceFace(patch, p8, bottom_normal, negateVector(front_normal), right_normal,
         mBottomMultiplier);
 
     // Trace front face
@@ -188,41 +189,41 @@ void Hemicube::BuildMultipliers() {
     v1.Normalize();
     v2.Normalize();
 
-    Vector v3 = -v1;
-    Vector v4 = -v2;
+    Vector v3 = negateVector(v1);
+    Vector v4 = negateVector(v2);
 
     // The distance from the center to the corners on the same plane is equal
     // to the square root of one-half the width of the hemicube.
     float distance = sqrt(WIDTH/2);
 
     // Create the 8 points that define the cube.
-    Point p1 = (v1 * distance).Translate(origin);
-	Point p2 = (v2 * distance).Translate(origin);
-	Point p3 = (v1 * -distance).Translate(origin);
-	Point p4 = (v2 * -distance).Translate(origin);
-	Point p5 = (normal * (WIDTH/2)).Translate(p1);
-	Point p6 = (normal * (WIDTH/2)).Translate(p2);
-	Point p7 = (normal * (WIDTH/2)).Translate(p3);
-	Point p8 = (normal * (WIDTH/2)).Translate(p4);
+    Point p1 = scalarMultiply(v1, distance).Translate(origin);
+	Point p2 = scalarMultiply(v2, distance).Translate(origin);
+	Point p3 = scalarMultiply(v1, -distance).Translate(origin);
+	Point p4 = scalarMultiply(v2, -distance).Translate(origin);
+	Point p5 = scalarMultiply(normal, (WIDTH/2)).Translate(p1);
+	Point p6 = scalarMultiply(normal, (WIDTH/2)).Translate(p2);
+	Point p7 = scalarMultiply(normal, (WIDTH/2)).Translate(p3);
+	Point p8 = scalarMultiply(normal, (WIDTH/2)).Translate(p4);
 
     // The vector that is normal to the left face is the sum of the vectors
     // that extend from the center point to the two corners of the left face.
-    Vector left_normal = v1 + v4;
+    Vector left_normal = add(v1, v4);
     left_normal.Normalize();
 
     // The vector that is normal to the top face is the sum of the vectors
     // that extend from the center point to the two corners of the top face.
-    Vector top_normal = v1 + v2;
+    Vector top_normal = add(v1, v2);
     top_normal.Normalize();
 
     // The vector that is normal to the right face is the sum of the vectors
     // that extend from the center point to the two corners of the right face.
-    Vector right_normal = v2 + v3;
+    Vector right_normal = add(v2, v3);
     right_normal.Normalize();
 
     // The vector that is normal to the bottom face is the sum of the vectors
     // that extend from the center point to the two corners of the bottom face.
-    Vector bottom_normal = v3 + v4;
+    Vector bottom_normal = add(v3, v4);
     bottom_normal.Normalize();
 
     // The vector that is normal to the front face is equal to the normal
@@ -239,11 +240,11 @@ void Hemicube::BuildMultipliers() {
 
     // Build the right multiplier
     mRightMultiplier = BuildMultiplier(origin, p6, normal, right_normal,
-        bottom_normal, -front_normal, mSubdivisions, mSubdivisions/2);
+        bottom_normal, negateVector(front_normal), mSubdivisions, mSubdivisions/2);
 
     // Build the bottom multiplier
     mBottomMultiplier = BuildMultiplier(origin, p8, normal, bottom_normal,
-        -front_normal, right_normal, mSubdivisions/2, mSubdivisions);
+        negateVector(front_normal), right_normal, mSubdivisions/2, mSubdivisions);
 
     // Build the front multiplier
     mFrontMultiplier = BuildMultiplier(origin, p5, normal, front_normal,
@@ -279,7 +280,7 @@ vector< vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
     // row index of the multiplier table. The inner loop determines the column
     // index of the multiplier table.
 
-    Point e = ((row + col) * 0.5).Translate(startingPoint);
+    Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
 
     for (int r(0); r < numRows; ++r) {
 
@@ -294,12 +295,12 @@ vector< vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
             // Compensate for the hemicube's shape. This involves multiplying
             // the value by the dot product between the face normal and the
             // ray.
-            float value = ray * faceNormal;
+            float value = dotProduct(ray, faceNormal);
 
             // Apply Lambert's cosine law, which says that the apparent
             // brightness of a surface is proportional to the cosine of the
             // angle between the surface normal and the direction of light.
-            value *= ray * patchNormal;
+            value *= dotProduct(ray, patchNormal);
 
             // Set the value in the multiplier map
             multiplier->at(r)->at(c) = value;
@@ -416,7 +417,7 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
     // row index of the multiplier table. The inner loop determines the column
     // index of the multiplier table.
 
-    Point e = ((row + col) * 0.5).Translate(startingPoint);
+    Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
 
     vector<Patch*>::const_iterator iter;
 

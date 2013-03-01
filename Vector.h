@@ -33,7 +33,8 @@ class Vector {
     ///
     friend ostream& operator<<(ostream& os, const Vector& other);
 
-    friend inline Vector operator+(const Vector& a, const Vector& b) {
+    friend inline Vector add(const Vector& a, const Vector& b)
+    {
         return Vector(a._x + b._x, a._y + b._y, a._z + b._z);
     }
 
@@ -42,6 +43,21 @@ class Vector {
         return Vector(v1._y * v2._z - v1._z * v2._y,
                       v1._z * v2._x - v1._x * v2._z,
                       v1._x * v2._y - v1._y * v2._x);
+    }
+
+    friend inline float dotProduct(const Vector &v1, const Vector &v2)
+    {
+        return (v1._x * v2._x + v1._y * v2._y + v1._z * v2._z);
+    }
+
+    friend inline Vector negateVector(const Vector &v)
+    {
+        return Vector(-v._x, -v._y, -v._z);
+    }
+
+    friend inline Vector scalarMultiply(const Vector &v, float scalar)
+    {
+        return Vector(v._x * scalar, v._y * scalar, v._z * scalar);
     }
 
 public:
@@ -94,39 +110,6 @@ public:
     inline void Normalize();
 
     ///
-    /// @name operator*
-    ///
-    /// @description
-    /// 	Scalar multiplication operator.
-    ///
-    /// @param scalar - scalar multiplier
-    /// @return - Vector multiplied by scalar value
-    ///
-    inline Vector operator*(const float& scalar) const;
-
-    ///
-    /// @name operator*
-    ///
-    /// @description
-    /// 	Dot product operator.
-    ///
-    /// @param other - the second vector
-    /// @return - Vector dot product
-    ///
-    inline float operator*(const Vector& other) const;
-
-    ///
-    /// @name operator=
-    ///
-    /// @description
-    /// 	Equals operator.
-    ///
-    /// @param other - the second vector
-    /// @return - address of this argument
-    ///
-    inline Vector& operator=(const Vector& other);
-
-    ///
     /// @name operator*=
     ///
     /// @description
@@ -136,16 +119,6 @@ public:
     /// @return - address of this argument
     ///
     inline Vector& operator*=(float s);
-
-    ///
-    /// @name operator-
-    ///
-    /// @description
-    /// 	Negation operator.
-    ///
-    /// @return - negation of this vector
-    ///
-    inline Vector operator-() const;
 
 private:
 
@@ -187,35 +160,12 @@ inline Point Vector::Translate(const Point &p)
 	return Point(p.x + _x, p.y + _y, p.z + _z);
 }
 
-// operator*
-inline Vector Vector::operator*(const float& scalar) const {
-    return Vector(_x * scalar, _y * scalar, _z * scalar);
-}
-
-// operator*
-inline float Vector::operator*(const Vector& other) const {
-    return (_x * other._x + _y * other._y + _z * other._z);
-}
-
-// operator=
-inline Vector& Vector::operator=(const Vector& other) {
-    _x = other._x;
-    _y = other._y;
-    _z = other._z;
-    return *this;
-}
-
 // operator*=
 inline Vector& Vector::operator*=(float s) {
     _x *= s;
     _y *= s;
     _z *= s;
     return *this;
-}
-
-// operator-
-inline Vector Vector::operator-() const {
-    return Vector(-_x, -_y, -_z);
 }
 
 }   // namespace Radiosity

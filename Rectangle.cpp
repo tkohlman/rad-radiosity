@@ -33,29 +33,31 @@ Rectangle::~Rectangle() {
 Point* Rectangle::Intersect(Vector v, Point o) {
 
     // Check if vector is parallel to plane (no intercept)
-    if (v * _normal == 0) {
+    if (dotProduct(v, _normal) == 0)
+    {
         return NULL;
     }
 
     // Find the distance from the ray origin to the intersect point
-    float distance = ( Vector(_a, o) * _normal ) / (v * _normal);
+    float distance = dotProduct(Vector(_a, o), _normal) / dotProduct(v, _normal);
 
     // From the distance, calculate the intersect point
-    Point *intersect = new Point((v * distance).Translate(o));
+    Point *intersect = new Point(scalarMultiply(v, distance).Translate(o));
 
     // Test to see if the point is inside the rectangle
     Vector v_test(*intersect, _c);
     Vector v1_test(_b, _c);
     Vector v2_test(_c, _d);
 
-    if ( (0 <= (v_test * v1_test)) &&
-         ((v_test * v1_test) < (v1_test * v1_test)) &&
-         (0 <= (v_test * v2_test)) &&
-         ((v_test * v2_test) < (v2_test * v2_test))) {
-
+    if ( (0 <= dotProduct(v_test, v1_test)) &&
+         (dotProduct(v_test, v1_test) < dotProduct(v1_test, v1_test)) &&
+         (0 <= dotProduct(v_test, v2_test)) &&
+         (dotProduct(v_test, v2_test) < dotProduct(v2_test, v2_test)))
+    {
         return intersect;
-
-    } else {
+    }
+    else
+    {
         // does not intersect plane within the rectangle
         return NULL;
     }
@@ -122,9 +124,9 @@ void Rectangle::Subdivide(float patchSize)
 
 				// Check boundary
 				if (i == size_i - 1) {
-					p3 = new Point((AB * len_AB).Translate(*p1));
+					p3 = new Point(scalarMultiply(AB, len_AB).Translate(*p1));
 				} else {
-					p3 = new Point((AB * patchSize).Translate(*p2));
+					p3 = new Point(scalarMultiply(AB, patchSize).Translate(*p2));
 				}
 
 				// add p3 to the list
@@ -136,9 +138,9 @@ void Rectangle::Subdivide(float patchSize)
 
 			// Update p1
 			if (j == size_j - 1) {
-				p1 = new Point((AD * len_AD).Translate(_a));
+				p1 = new Point(scalarMultiply(AD, len_AD).Translate(_a));
 			} else {
-				p1 = new Point((AD * patchSize).Translate(*p1));
+				p1 = new Point(scalarMultiply(AD, patchSize).Translate(*p1));
 			}
 		}
 

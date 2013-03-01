@@ -60,6 +60,14 @@ class Vector {
         return Vector(v._x * scalar, v._y * scalar, v._z * scalar);
     }
 
+    friend inline void normalize(Vector &v)
+    {
+        double s = 1.0 / (double) sqrt(v._x * v._x + v._y * v._y + v._z * v._z);
+        v._x *= s;
+        v._y *= s;
+        v._z *= s;
+    }
+
 public:
 
     ///
@@ -87,38 +95,7 @@ public:
     ///
     Vector();
 
-    ///
-    /// @name ~Vector
-    ///
-    /// @description
-    /// 	Destructor
-    ///
-    /// @return - void
-    ///
-    ~Vector();
-
     inline Point Translate(const Point &p);
-
-    ///
-    /// @name Normalize
-    ///
-    /// @description
-    /// 	Normalizes the vector to a unit length.
-    ///
-    /// @return - void
-    ///
-    inline void Normalize();
-
-    ///
-    /// @name operator*=
-    ///
-    /// @description
-    /// 	Times-equals operator.
-    ///
-    /// @param s - a scalar floating point value
-    /// @return - address of this argument
-    ///
-    inline Vector& operator*=(float s);
 
 private:
 
@@ -149,23 +126,9 @@ private:
 
 };  // class Vector
 
-// Normalize
-inline void Vector::Normalize() {
-    double s = 1.0 / (double) sqrt(_x * _x + _y * _y + _z * _z);
-    _x *= s; _y *= s; _z *= s;
-}
-
 inline Point Vector::Translate(const Point &p)
 {
 	return Point(p.x + _x, p.y + _y, p.z + _z);
-}
-
-// operator*=
-inline Vector& Vector::operator*=(float s) {
-    _x *= s;
-    _y *= s;
-    _z *= s;
-    return *this;
 }
 
 }   // namespace Radiosity

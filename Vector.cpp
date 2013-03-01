@@ -1,6 +1,6 @@
 ///
 /// @file Vector.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -26,10 +26,6 @@ Vector::Vector(const Point &p1, const Point &p2):
 // Vector
 Vector::Vector() :
     _x(0), _y(0), _z(0) {
-}
-
-// ~Vector   
-Vector::~Vector() {
 }
 
 ostream& operator<<(ostream& os, const Vector& v) {

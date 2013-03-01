@@ -59,8 +59,8 @@ void PatchCalculator::Subdivide(vector<Rectangle*> *quads, vector<Patch*> *patch
         float len_AB = (*iter)->B().DistanceTo((*iter)->A());
         float len_AD = (*iter)->D().DistanceTo((*iter)->A());
 
-        AB.Normalize();
-        AD.Normalize();
+        normalize(AB);
+        normalize(AD);
 
         Point *p1;
 

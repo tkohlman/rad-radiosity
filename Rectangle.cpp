@@ -101,8 +101,8 @@ void Rectangle::Subdivide(float patchSize)
 		float len_AB = _b.DistanceTo(_a);
 		float len_AD = _d.DistanceTo(_a);
 
-		AB.Normalize();
-		AD.Normalize();
+		normalize(AB);
+		normalize(AD);
 
 		Point *p1;
 

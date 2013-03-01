@@ -27,7 +27,7 @@ Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) 
     Vector AB(*mB, *mA);
     Vector BC(*mC, *mB);
     mPatchNormal = crossProduct(BC, AB);
-    mPatchNormal.Normalize();
+    normalize(mPatchNormal);
 
     // Calculate the area
     float dAB = mA->DistanceTo(*mB);
@@ -36,7 +36,7 @@ Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) 
 
     // Calculate the center point
     Vector AC(*mC, *mA);
-    AC.Normalize();
+    normalize(AC);
     float dist = sqrt((dAB/2) * (dAB/2) + (dBC/2) * (dBC/2));
     mCenterPoint = scalarMultiply(AC, dist).Translate(*mA);
 
@@ -174,8 +174,8 @@ bool Patch::IsFacing(const Patch *other) const
 
 	Vector v21(mCenterPoint, other->mCenterPoint);
 	Vector v12(other->mCenterPoint, mCenterPoint);
-	v12.Normalize();
-	v21.Normalize();
+	normalize(v12);
+	normalize(v21);
 
 	float dp1 = dotProduct(v12, mPatchNormal);
 	float dp2 = dotProduct(v21, other->mPatchNormal);

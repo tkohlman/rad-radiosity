@@ -80,8 +80,8 @@ void Hemicube::TraceHemicube(Patch *patch) {
     Vector v1(corner, origin);
     Vector v2 = crossProduct(normal, v1);
 
-    v1.Normalize();
-    v2.Normalize();
+    normalize(v1);
+    normalize(v2);
 
     Vector v3 = negateVector(v1);
     Vector v4 = negateVector(v2);
@@ -103,22 +103,22 @@ void Hemicube::TraceHemicube(Patch *patch) {
     // The vector that is normal to the left face is the sum of the vectors
     // that extend from the center point to the two corners of the left face.
     Vector left_normal = add(v1, v4);
-    left_normal.Normalize();
+    normalize(left_normal);
 
     // The vector that is normal to the top face is the sum of the vectors
     // that extend from the center point to the two corners of the top face.
     Vector top_normal = add(v1, v2);
-    top_normal.Normalize();
+    normalize(top_normal);
 
     // The vector that is normal to the right face is the sum of the vectors
     // that extend from the center point to the two corners of the right face.
     Vector right_normal = add(v2, v3);
-    right_normal.Normalize();
+    normalize(right_normal);
 
     // The vector that is normal to the bottom face is the sum of the vectors
     // that extend from the center point to the two corners of the bottom face.
     Vector bottom_normal = add(v3, v4);
-    bottom_normal.Normalize();
+    normalize(bottom_normal);
 
     // The vector that is normal to the front face is equal to the normal
     // vector of the patch. In this case, the patch is the x-y plane.
@@ -186,8 +186,8 @@ void Hemicube::BuildMultipliers() {
     Vector v1(corner, origin);
     Vector v2 = crossProduct(normal, v1);
 
-    v1.Normalize();
-    v2.Normalize();
+    normalize(v1);
+    normalize(v2);
 
     Vector v3 = negateVector(v1);
     Vector v4 = negateVector(v2);
@@ -209,22 +209,22 @@ void Hemicube::BuildMultipliers() {
     // The vector that is normal to the left face is the sum of the vectors
     // that extend from the center point to the two corners of the left face.
     Vector left_normal = add(v1, v4);
-    left_normal.Normalize();
+    normalize(left_normal);
 
     // The vector that is normal to the top face is the sum of the vectors
     // that extend from the center point to the two corners of the top face.
     Vector top_normal = add(v1, v2);
-    top_normal.Normalize();
+    normalize(top_normal);
 
     // The vector that is normal to the right face is the sum of the vectors
     // that extend from the center point to the two corners of the right face.
     Vector right_normal = add(v2, v3);
-    right_normal.Normalize();
+    normalize(right_normal);
 
     // The vector that is normal to the bottom face is the sum of the vectors
     // that extend from the center point to the two corners of the bottom face.
     Vector bottom_normal = add(v3, v4);
-    bottom_normal.Normalize();
+    normalize(bottom_normal);
 
     // The vector that is normal to the front face is equal to the normal
     // vector of the patch. In this case, the patch is the x-y plane.
@@ -271,10 +271,10 @@ vector< vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
 
     // Make sure the row and column vectors are normalized. Then weight them
     // by dp.
-    row.Normalize();
-    col.Normalize();
-    row *= dp;
-    col *= dp;
+    normalize(row);
+    normalize(col);
+    row = scalarMultiply(row, dp);
+    col = scalarMultiply(col, dp);
 
     // We will be looping in two directions.The outer loop determines the
     // row index of the multiplier table. The inner loop determines the column
@@ -290,7 +290,7 @@ vector< vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
 
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, centerPoint);
-            ray.Normalize();
+            normalize(ray);
 
             // Compensate for the hemicube's shape. This involves multiplying
             // the value by the dot product between the face normal and the
@@ -408,10 +408,10 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
     // Make sure the row and column vectors are normalized. Then weight them
     // by dp.
-    row.Normalize();
-    col.Normalize();
-    row *= dp;
-    col *= dp;
+    normalize(row);
+    normalize(col);
+    row = scalarMultiply(row, dp);
+    col = scalarMultiply(col, dp);
 
     // We will be looping in two directions.The outer loop determines the
     // row index of the multiplier table. The inner loop determines the column
@@ -429,7 +429,7 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, origin);
-            ray.Normalize();
+            normalize(ray);
 
             int index = 0;
 

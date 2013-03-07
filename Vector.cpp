@@ -28,11 +28,6 @@ Vector::Vector() :
     _x(0), _y(0), _z(0) {
 }
 
-ostream& operator<<(ostream& os, const Vector& v) {
-    os << "(" << v._x << "i, " << v._y << "j, " << v._z << "k)";
-    return os;
-}
-
 }   // namespace Radiosity
 
 

@@ -1,6 +1,6 @@
 ///
 /// @file Point.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -64,14 +64,6 @@ void Point::DrawNoColor()
 }
 
 //
-// To String
-//
-ostream& operator<<(ostream& os, const Point& other) {
-    os << "(" << other.x << ", " << other.y << ", " << other.z << ")";
-    return os;
-}
-
-//
 // UpdateColor
 //
 void Point::UpdateColor(const Color& color, float weight) {
@@ -80,7 +72,7 @@ void Point::UpdateColor(const Color& color, float weight) {
 
     if (!(color == Color())) {
         Color weighted_color = (mColor * mCount) + color;
-        
+
         mColor = weighted_color * reciprocal;
         //cout << "reciprocal " << reciprocal << endl;
         ++mCount;

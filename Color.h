@@ -1,6 +1,6 @@
 ///
 /// @file Color.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December
 ///
@@ -18,13 +18,11 @@ namespace Radiosity {
 
 class Color {
 
-    friend ostream& operator<<(ostream& os, const Color& other);
-
 public:
 
     ///
     /// @name Color
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -37,7 +35,7 @@ public:
 
     ///
     /// @name Color
-    /// 
+    ///
     /// @description
     /// 	Copy constructor
     ///
@@ -45,10 +43,10 @@ public:
     /// @return - void
     ///
     Color(const Color& other);
-    
+
     ///
     /// @name Color
-    /// 
+    ///
     /// @description
     /// 	Default constructor
     ///
@@ -58,51 +56,51 @@ public:
 
     ///
     /// @name ~Color
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
     /// @return - void
-    ///    
+    ///
     ~Color();
 
     ///
     /// @name R
-    /// 
+    ///
     /// @description
     /// 	Accessor for the _r member variable.
     ///
     /// @return - the red component of this color
-    ///    
+    ///
     inline float R() const;
 
     ///
     /// @name G
-    /// 
+    ///
     /// @description
     /// 	Accessor for the _g member variable.
     ///
     /// @return - the green component of this color
-    ///    
+    ///
     inline float G() const;
-    
+
     ///
     /// @name B
-    /// 
+    ///
     /// @description
     /// 	Accessor for the _b member variable.
     ///
     /// @return - the blue component of this color
     ///
     inline float B() const;
-    
+
     inline Color& operator=(const Color& other);
     inline bool operator==(const Color& other) const;
     inline Color operator*(float scalar) const;
-    inline Color operator*(const Color& other) const;  
-    inline Color operator+(const Color& other) const;    
+    inline Color operator*(const Color& other) const;
+    inline Color operator+(const Color& other) const;
     inline Color& operator+=(const Color& other);
-       
+
 private:
 
     ///
@@ -165,12 +163,12 @@ inline Color Color::operator+(const Color& other) const {
 }
 
 
-// R    
+// R
 inline float Color::R() const {
     return (_r);
 }
 
-// G  
+// G
 inline float Color::G() const {
     return (_g);
 }

@@ -21,18 +21,6 @@ namespace Radiosity {
 
 class Vector {
 
-    ///
-    /// @name operator<<
-    ///
-    /// @description
-    /// 	Vector output operator.
-    ///
-    /// @param os - the output stream
-    /// @param other - the vector to output
-    /// @return - the output stream
-    ///
-    friend ostream& operator<<(ostream& os, const Vector& other);
-
     friend inline Vector add(const Vector& a, const Vector& b)
     {
         return Vector(a._x + b._x, a._y + b._y, a._z + b._z);

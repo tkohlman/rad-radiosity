@@ -145,9 +145,9 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    int num_iterations = strtol(argv[3], NULL, 0);
+    int num_iterations = strtol(argv[3], nullptr, 0);
 
-    float patch_size = strtof(argv[1], NULL);
+    float patch_size = strtof(argv[1], nullptr);
     
     vector<Rectangle*> *quads;
     vector<Patch*> *patches = new vector<Patch*>();
@@ -195,11 +195,11 @@ int main(int argc, char **argv) {
     vector<Patch*>::iterator patchIter = patches->begin();
     for (; patchIter != patches->end(); ++patchIter) {
         delete *patchIter;
-        *patchIter = NULL;
+        *patchIter = nullptr;
     }
     
     delete patches;
-    Patches = patches = NULL;
+    Patches = patches = nullptr;
 
    	
     return 0;

@@ -67,37 +67,37 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 	    } else if (strcmp(begin, "e") == 0) {
 	    
 	        // color information
-	        char *ec = strtok(NULL, " ");
+	        char *ec = strtok(nullptr, " ");
 
-	        emission = strtof(ec, NULL);;
+	        emission = strtof(ec, nullptr);;
 	    
 	    } else if (strcmp(begin, "c") == 0) {
 	    
 	        // color information
-	        char *rc = strtok(NULL, " ");
-	        char *gc = strtok(NULL, " ");
-	        char *bc = strtok(NULL, " ");
+	        char *rc = strtok(nullptr, " ");
+	        char *gc = strtok(nullptr, " ");
+	        char *bc = strtok(nullptr, " ");
 	        
-	        float r = strtof(rc, NULL);
-	        float g = strtof(gc, NULL);
-	        float b = strtof(bc, NULL);
+	        float r = strtof(rc, nullptr);
+	        float g = strtof(gc, nullptr);
+	        float b = strtof(bc, nullptr);
 	        
 	        color = Color(r, g, b);
 	    
 	    } else if (strcmp(begin, "v") == 0) {
 	        
-	        char *xc = strtok(NULL, " ");
-	        char *yc = strtok(NULL, " ");
-	        char *zc = strtok(NULL, " ");
+	        char *xc = strtok(nullptr, " ");
+	        char *yc = strtok(nullptr, " ");
+	        char *zc = strtok(nullptr, " ");
 	        
-	        if ((xc == NULL) || (yc == NULL) || (zc == NULL)) {
+	        if ((xc == nullptr) || (yc == nullptr) || (zc == nullptr)) {
 	            cout << "Error parsing tokens on line " << line_num << endl;
 	            exit(1);
 	        }
 	        
-	        float x = strtof(xc, NULL);
-	        float y = strtof(yc, NULL);
-	        float z = strtof(zc, NULL);
+	        float x = strtof(xc, nullptr);
+	        float y = strtof(yc, nullptr);
+	        float z = strtof(zc, nullptr);
 	        
 	        Point p(x, y, z, color);
 
@@ -106,21 +106,21 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 	    } else if (strcmp(begin, "f") == 0) {
 	        
 	        // face definition - read new quad       
-	        char *ac = strtok(NULL, " ");
-	        char *bc = strtok(NULL, " ");
-	        char *cc = strtok(NULL, " ");
-	        char *dc = strtok(NULL, " ");
+	        char *ac = strtok(nullptr, " ");
+	        char *bc = strtok(nullptr, " ");
+	        char *cc = strtok(nullptr, " ");
+	        char *dc = strtok(nullptr, " ");
 
 	        
-	        if ((ac == NULL) || (bc == NULL) || (cc == NULL) || (dc == NULL)) {
+	        if ((ac == nullptr) || (bc == nullptr) || (cc == nullptr) || (dc == nullptr)) {
 	            cout << "Error parsing tokens on line " << line_num << endl;
 	            exit(1);
 	        }
 	        
-	        int index_a = strtol(ac, NULL, 0) - 1;
-	        int index_b = strtol(bc, NULL, 0) - 1;
-	        int index_c = strtol(cc, NULL, 0) - 1;
-	        int index_d = strtol(dc, NULL, 0) - 1;
+	        int index_a = strtol(ac, nullptr, 0) - 1;
+	        int index_b = strtol(bc, nullptr, 0) - 1;
+	        int index_c = strtol(cc, nullptr, 0) - 1;
+	        int index_d = strtol(dc, nullptr, 0) - 1;
 
 	        // Create the new quad
 	        quads->push_back(new Rectangle(vertices.at(index_a),
@@ -145,11 +145,11 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 
     // Close the file
     fclose(file);
-    file = NULL;
+    file = nullptr;
     
     // Free the buffer
     delete [] buffer;
-    buffer = NULL;
+    buffer = nullptr;
 
     return quads;
 }
@@ -195,13 +195,13 @@ vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 	    } else if (strcmp(begin, "c") == 0) {
 	    
 	        // color information
-	        char *rc = strtok(NULL, " ");
-	        char *gc = strtok(NULL, " ");
-	        char *bc = strtok(NULL, " ");
+	        char *rc = strtok(nullptr, " ");
+	        char *gc = strtok(nullptr, " ");
+	        char *bc = strtok(nullptr, " ");
 	        
-	        float r = strtof(rc, NULL);
-	        float g = strtof(gc, NULL);
-	        float b = strtof(bc, NULL);
+	        float r = strtof(rc, nullptr);
+	        float g = strtof(gc, nullptr);
+	        float b = strtof(bc, nullptr);
 	        
 	        color = Color(r, g, b);
 	    
@@ -209,19 +209,19 @@ vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 	    
 	        // patch definition - read new patch
 	        
-	        float Ax = strtof(strtok(NULL, " "), NULL);
-	        float Ay = strtof(strtok(NULL, " "), NULL);
-	        float Az = strtof(strtok(NULL, " "), NULL);
-	        float Bx = strtof(strtok(NULL, " "), NULL);
-	        float By = strtof(strtok(NULL, " "), NULL);
-	        float Bz = strtof(strtok(NULL, " "), NULL);
-	        float Cx = strtof(strtok(NULL, " "), NULL);
-	        float Cy = strtof(strtok(NULL, " "), NULL);
-	        float Cz = strtof(strtok(NULL, " "), NULL);
-	        float Dx = strtof(strtok(NULL, " "), NULL);
-	        float Dy = strtof(strtok(NULL, " "), NULL);
-	        float Dz = strtof(strtok(NULL, " "), NULL);
-	        float emission = strtof(strtok(NULL, " "), NULL);
+	        float Ax = strtof(strtok(nullptr, " "), nullptr);
+	        float Ay = strtof(strtok(nullptr, " "), nullptr);
+	        float Az = strtof(strtok(nullptr, " "), nullptr);
+	        float Bx = strtof(strtok(nullptr, " "), nullptr);
+	        float By = strtof(strtok(nullptr, " "), nullptr);
+	        float Bz = strtof(strtok(nullptr, " "), nullptr);
+	        float Cx = strtof(strtok(nullptr, " "), nullptr);
+	        float Cy = strtof(strtok(nullptr, " "), nullptr);
+	        float Cz = strtof(strtok(nullptr, " "), nullptr);
+	        float Dx = strtof(strtok(nullptr, " "), nullptr);
+	        float Dy = strtof(strtok(nullptr, " "), nullptr);
+	        float Dz = strtof(strtok(nullptr, " "), nullptr);
+	        float emission = strtof(strtok(nullptr, " "), nullptr);
 	        
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
@@ -298,13 +298,13 @@ vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 	    } else if (strcmp(begin, "c") == 0) {
 	    
 	        // color information
-	        char *rc = strtok(NULL, " ");
-	        char *gc = strtok(NULL, " ");
-	        char *bc = strtok(NULL, " ");
+	        char *rc = strtok(nullptr, " ");
+	        char *gc = strtok(nullptr, " ");
+	        char *bc = strtok(nullptr, " ");
 	        
-	        float r = strtof(rc, NULL);
-	        float g = strtof(gc, NULL);
-	        float b = strtof(bc, NULL);
+	        float r = strtof(rc, nullptr);
+	        float g = strtof(gc, nullptr);
+	        float b = strtof(bc, nullptr);
 	        
 	        color = Color(r, g, b);
 	    
@@ -312,19 +312,19 @@ vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 	    
 	        // patch definition - read new patch
 	        
-	        float Ax = strtof(strtok(NULL, " "), NULL);
-	        float Ay = strtof(strtok(NULL, " "), NULL);
-	        float Az = strtof(strtok(NULL, " "), NULL);
-	        float Bx = strtof(strtok(NULL, " "), NULL);
-	        float By = strtof(strtok(NULL, " "), NULL);
-	        float Bz = strtof(strtok(NULL, " "), NULL);
-	        float Cx = strtof(strtok(NULL, " "), NULL);
-	        float Cy = strtof(strtok(NULL, " "), NULL);
-	        float Cz = strtof(strtok(NULL, " "), NULL);
-	        float Dx = strtof(strtok(NULL, " "), NULL);
-	        float Dy = strtof(strtok(NULL, " "), NULL);
-	        float Dz = strtof(strtok(NULL, " "), NULL);
-	        float emission = strtof(strtok(NULL, " "), NULL);
+	        float Ax = strtof(strtok(nullptr, " "), nullptr);
+	        float Ay = strtof(strtok(nullptr, " "), nullptr);
+	        float Az = strtof(strtok(nullptr, " "), nullptr);
+	        float Bx = strtof(strtok(nullptr, " "), nullptr);
+	        float By = strtof(strtok(nullptr, " "), nullptr);
+	        float Bz = strtof(strtok(nullptr, " "), nullptr);
+	        float Cx = strtof(strtok(nullptr, " "), nullptr);
+	        float Cy = strtof(strtok(nullptr, " "), nullptr);
+	        float Cz = strtof(strtok(nullptr, " "), nullptr);
+	        float Dx = strtof(strtok(nullptr, " "), nullptr);
+	        float Dy = strtof(strtok(nullptr, " "), nullptr);
+	        float Dz = strtof(strtok(nullptr, " "), nullptr);
+	        float emission = strtof(strtok(nullptr, " "), nullptr);
 	           
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
@@ -345,7 +345,7 @@ vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 	        // los definition (for the last patch read)
 
 	        // read the patch num
-	        int patch_num = strtol(strtok(NULL, " "), NULL, 0);
+	        int patch_num = strtol(strtok(nullptr, " "), nullptr, 0);
 	        
 	        // insert the patch num into the last los vector
 	        los.back().push_back(patch_num);
@@ -429,13 +429,13 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 	    } else if (strcmp(begin, "c") == 0) {
 	    
 	        // color information
-	        char *rc = strtok(NULL, " ");
-	        char *gc = strtok(NULL, " ");
-	        char *bc = strtok(NULL, " ");
+	        char *rc = strtok(nullptr, " ");
+	        char *gc = strtok(nullptr, " ");
+	        char *bc = strtok(nullptr, " ");
 	        
-	        float r = strtof(rc, NULL);
-	        float g = strtof(gc, NULL);
-	        float b = strtof(bc, NULL);
+	        float r = strtof(rc, nullptr);
+	        float g = strtof(gc, nullptr);
+	        float b = strtof(bc, nullptr);
 	        
 	        color = Color(r, g, b);
 	    
@@ -443,19 +443,19 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 	    
 	        // patch definition - read new patch
 
-	        float Ax = strtof(strtok(NULL, " "), NULL);
-	        float Ay = strtof(strtok(NULL, " "), NULL);
-	        float Az = strtof(strtok(NULL, " "), NULL);
-	        float Bx = strtof(strtok(NULL, " "), NULL);
-	        float By = strtof(strtok(NULL, " "), NULL);
-	        float Bz = strtof(strtok(NULL, " "), NULL);
-	        float Cx = strtof(strtok(NULL, " "), NULL);
-	        float Cy = strtof(strtok(NULL, " "), NULL);
-	        float Cz = strtof(strtok(NULL, " "), NULL);
-	        float Dx = strtof(strtok(NULL, " "), NULL);
-	        float Dy = strtof(strtok(NULL, " "), NULL);
-	        float Dz = strtof(strtok(NULL, " "), NULL);
-	        float emission = strtof(strtok(NULL, " "), NULL);
+	        float Ax = strtof(strtok(nullptr, " "), nullptr);
+	        float Ay = strtof(strtok(nullptr, " "), nullptr);
+	        float Az = strtof(strtok(nullptr, " "), nullptr);
+	        float Bx = strtof(strtok(nullptr, " "), nullptr);
+	        float By = strtof(strtok(nullptr, " "), nullptr);
+	        float Bz = strtof(strtok(nullptr, " "), nullptr);
+	        float Cx = strtof(strtok(nullptr, " "), nullptr);
+	        float Cy = strtof(strtok(nullptr, " "), nullptr);
+	        float Cz = strtof(strtok(nullptr, " "), nullptr);
+	        float Dx = strtof(strtok(nullptr, " "), nullptr);
+	        float Dy = strtof(strtok(nullptr, " "), nullptr);
+	        float Dz = strtof(strtok(nullptr, " "), nullptr);
+	        float emission = strtof(strtok(nullptr, " "), nullptr);
 	        
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
@@ -476,7 +476,7 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 	        // los definition (for the last patch read)
 
 	        // read the patch num
-	        int patch_num = strtol(strtok(NULL, " "), NULL, 0);
+	        int patch_num = strtol(strtok(nullptr, " "), nullptr, 0);
 	        
 	        // insert the patch num into the last los vector
 	        los.back().push_back(patch_num);
@@ -486,7 +486,7 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 	        // formfactor (for the last patch read)
 
 	        // read the patch num
-	        float ff = strtof(strtok(NULL, " "), NULL);
+	        float ff = strtof(strtok(nullptr, " "), nullptr);
 	        
 	        // insert the patch num into the last los vector
 	        patches->back()->GetFormFactors()->push_back(ff);

@@ -63,7 +63,7 @@ public:
     ///
     /// @param v - direction vector of the ray
     /// @param o - origin of the ray
-    /// @return - intersection point closest to ray origin, NULL if no
+    /// @return - intersection point closest to ray origin, nullptr if no
     ///           intersection occurs
     ///
     virtual Point* Intersect(Vector v, Point o) = 0;

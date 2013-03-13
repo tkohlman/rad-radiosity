@@ -16,7 +16,7 @@ namespace Radiosity {
 // Rectangle
 Rectangle::Rectangle(Point a, Point b, Point c, Point d, Color color,
     float emit) :
-    Shape(color), _a(a), _b(b), _c(c), _d(d), emission(emit), mPatches(NULL) {
+    Shape(color), _a(a), _b(b), _c(c), _d(d), emission(emit), mPatches(nullptr) {
 
     // calculate the normal vector
     Vector v1(b, a);
@@ -35,7 +35,7 @@ Point* Rectangle::Intersect(Vector v, Point o) {
     // Check if vector is parallel to plane (no intercept)
     if (dotProduct(v, _normal) == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Find the distance from the ray origin to the intersect point
@@ -59,14 +59,14 @@ Point* Rectangle::Intersect(Vector v, Point o) {
     else
     {
         // does not intersect plane within the rectangle
-        return NULL;
+        return nullptr;
     }
 }
 
 void Rectangle::Subdivide(float patchSize)
 {
 
-	if (mPatches == NULL)
+	if (mPatches == nullptr)
 	{
 		mPatches = new vector< Patch* >();
 
@@ -92,7 +92,7 @@ void Rectangle::Subdivide(float patchSize)
 
 		// Create a two-dimensional vector to hold points
 		vector< vector<Point*> > points(size_i + 1, vector<Point*>(size_j + 1,
-			(Point*)NULL));
+			(Point*)nullptr));
 
 
 

@@ -50,7 +50,7 @@ void PatchCalculator::Subdivide(vector<Rectangle*> *quads, vector<Patch*> *patch
 
         // Create a two-dimensional vector to hold points
         vector< vector<Point*> > points(size_i + 1, vector<Point*>(size_j + 1,
-            (Point*)NULL));
+            (Point*)nullptr));
 
 
 

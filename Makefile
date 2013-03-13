@@ -58,7 +58,7 @@ LIBDIRS =
 
 LDLIBS = -lglut -lGLU -lGL -lXext -lX11 -lm
 
-CFLAGS = -g $(INCLUDE)
+CFLAGS = -g $(INCLUDE) -std=c++0x
 CCFLAGS =  $(CFLAGS)
 CXXFLAGS = $(CFLAGS)
 

@@ -437,7 +437,7 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
             // Determine the shape that this ray intersects. Knowing the shape
             // eliminates the patches from all other objects (a significant
             // improvement).
-            Point *closest = NULL;
+            Point *closest = nullptr;
 
             // find the closest intersection
             int shape2 = 0;
@@ -447,11 +447,11 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
                 // Get the intersection point
                 Point *p = (mShapes->at(shape))->Intersect(ray, origin);
 
-                if (p != NULL) {
+                if (p != nullptr) {
 
                     // There was an intersection
 
-                    if (closest == NULL) {
+                    if (closest == nullptr) {
 
                         // p is closest, by default
                         closest = p;
@@ -478,7 +478,7 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
                     // If the ray intersects this patch
                     if ((*iter)->Intersect(ray, origin) > 0) {
-                    //if (closest != NULL && (*iter)->Contains(*closest)) {
+                    //if (closest != nullptr && (*iter)->Contains(*closest)) {
                         // Update the form factor for this patch
                         patch->UpdateFormFactor(index, multiplier->at(r)->at(c));
                         break;

@@ -1,121 +1,180 @@
-#
-# Created by gmakemake (Ubuntu Dec 29 2011) on Sat Jul 14 08:35:48 2012
-#
+################################################################################
+######                         Acknowledgements                           ######
+################################################################################
+#                                                                              #
+#   This makefile scheme is based off of the method developed by Tom Tromey.   #
+#   For more information, visit: http://mad-scientist.net/make/autodep.html    #
+#                                                                              #
+################################################################################
 
-#
-# Definitions
-#
+################################################################################
+######                          Source Folders                            ######
+################################################################################
+MODULES =
+MODULES += src/graphics/
+MODULES += src/hemicube/
+MODULES += src/io/
+MODULES += src/radiosity/
+MODULES += src/shapes/
 
-.SUFFIXES:
-.SUFFIXES:	.a .o .c .C .cpp .s .S
-.c.o:
-		$(COMPILE.c) $<
-.C.o:
-		$(COMPILE.cc) $<
-.cpp.o:
-		$(COMPILE.cc) $<
-.S.s:
-		$(CPP) -o $*.s $<
-.s.o:
-		$(COMPILE.s) -o $@ $<
-.c.a:
-		$(COMPILE.c) -o $% $<
-		$(AR) $(ARFLAGS) $@ $%
-		$(RM) $%
-.C.a:
-		$(COMPILE.cc) -o $% $<
-		$(AR) $(ARFLAGS) $@ $%
-		$(RM) $%
-.cpp.a:
-		$(COMPILE.cc) -o $% $<
-		$(AR) $(ARFLAGS) $@ $%
-		$(RM) $%
+################################################################################
+######                          Header Folders                            ######
+################################################################################
+INCLUDES =
+INCLUDES += include/graphics/
+INCLUDES += include/hemicube/
+INCLUDES += include/io/
+INCLUDES += include/radiosity/
+INCLUDES += include/shapes/
 
-AS =		as
-CC =		gcc
-CXX =		g++
+################################################################################
+######                               Flags                                ######
+################################################################################
+SOURCE :=
 
-RM = rm -f
-AR = ar
-LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-LINK.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
-COMPILE.s = $(AS) $(ASFLAGS)
-COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
-COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c
-CPP = $(CPP) $(CPPFLAGS)
-########## Flags from header.mak
+LIBDIRS              =
+LDLIBS              := -lglut -lGLU -lGL -lXext -lX11 -lm
 
-#
-# This header.mak file will set up all necessary options for compiling
-# and linking C and C++ programs which use OpenGL and/or GLUT on the
-# Ubuntu systems.
-#
-# If you want to take advantage of GDB's extra debugging features,
-# change "-g" in the CFLAGS and LIBFLAGS macro definitions to "-ggdb".
-#
-INCLUDE =
-LIBDIRS =
+CFLAGS              := $(patsubst %,-I%,$(INCLUDES))
 
-LDLIBS = -lglut -lGLU -lGL -lXext -lX11 -lm
+CXX_RELEASE_FLAGS   := $(CFLAGS) -std=c++0x
+CXX_DEBUG_FLAGS     := $(CXX_RELEASE_FLAGS) -ggdb -Wall -pedantic -Wextra
+CXXFLAGS             =
 
-CFLAGS = -g $(INCLUDE) -std=c++0x
-CCFLAGS =  $(CFLAGS)
-CXXFLAGS = $(CFLAGS)
+LIB_RELEASE_FLAGS   := $(LIBDIRS) $(LDLIBS)
+LIB_DEBUG_FLAGS     := -ggdb $(LIB_RELEASE_FLAGS)
+CCLIBFLAGS           =
 
-LIBFLAGS = -g $(LIBDIRS) $(LDLIBS)
-CLIBFLAGS = $(LIBFLAGS)
-CCLIBFLAGS = $(LIBFLAGS)
+################################################################################
+######                            Directories                             ######
+################################################################################
+   ROOT := .
+INCLUDE := $(ROOT)/include
+    SRC := $(ROOT)/src
+    LIB := $(ROOT)/lib
+    OBJ := obj
+ OBJDIR  = $(OBJ)/
+    BIN := $(ROOT)/bin
+    DEP := $(ROOT)/dep
+  DEBUG := debug
+RELEASE := release
 
-########## End of flags from header.mak
+DEPFILE = $(DEP)/$(*F)
+OBJFILE = $(OBJDIR)/$(*F)
 
+################################################################################
+######                             Definitions                            ######
+################################################################################
 
-CPP_FILES =	Color.cpp FormCalculator.cpp Hemicube.cpp Patch.cpp PatchCalculator.cpp Point.cpp Radiosity.cpp RadiosityCalculator.cpp RadiosityReader.cpp Rectangle.cpp Shape.cpp SightCalculator.cpp Vector.cpp
-C_FILES =	
-PS_FILES =	
-S_FILES =	
-H_FILES =	Color.h FormCalculator.h Hemicube.h Patch.h PatchCalculator.h Point.h RadiosityCalculator.h RadiosityReader.h Rectangle.h Shape.h SightCalculator.h Vector.h
-SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
-.PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	Color.o FormCalculator.o Hemicube.o Patch.o PatchCalculator.o Point.o RadiosityCalculator.o RadiosityReader.o Rectangle.o Shape.o SightCalculator.o Vector.o 
+CXX := g++
 
-#
-# Main targets
-#
+CXXDEP := g++ -MM -MG $(CFLAGS)
 
-all:	Radiosity 
+empty :=
+space := $(empty) $(empty)
 
-Radiosity:	Radiosity.o $(OBJFILES)
-	$(CXX) $(CXXFLAGS) -o Radiosity Radiosity.o $(OBJFILES) $(CCLIBFLAGS)
+RM      = rm -f
+MKDIR   = mkdir -p
+RMDIR   = $(MKDIR) $1; rmdir $1
 
-#
-# Dependencies
-#
+################################################################################
+######                              Magic                                 ######
+################################################################################
 
-Color.o:	Color.h
-FormCalculator.o:	Color.h FormCalculator.h Hemicube.h Patch.h Point.h Rectangle.h Shape.h Vector.h
-Hemicube.o:	Color.h Hemicube.h Patch.h Point.h Rectangle.h Shape.h Vector.h
-Patch.o:	Color.h Patch.h Point.h Vector.h
-PatchCalculator.o:	Color.h Patch.h PatchCalculator.h Point.h Rectangle.h Shape.h Vector.h
-Point.o:	Color.h Point.h
-Radiosity.o:	Color.h FormCalculator.h Hemicube.h Patch.h PatchCalculator.h Point.h RadiosityCalculator.h RadiosityReader.h Rectangle.h Shape.h SightCalculator.h Vector.h
-RadiosityCalculator.o:	Color.h Patch.h Point.h RadiosityCalculator.h Vector.h
-RadiosityReader.o:	Color.h Patch.h Point.h RadiosityReader.h Rectangle.h Shape.h Vector.h
-Rectangle.o:	Color.h Point.h Rectangle.h Shape.h Vector.h
-Shape.o:	Color.h Point.h Shape.h Vector.h
-SightCalculator.o:	Color.h Patch.h Point.h SightCalculator.h Vector.h
-Vector.o:	Vector.h
+# Include each module.mk file
+include $(patsubst %,%module.mk,$(MODULES))
 
-#
-# Housekeeping
-#
+# Set the source file search path
+vpath %.cpp $(MODULES)
+vpath $(DEP)/%.d $(DEP)
 
-Archive:	archive.tgz
+# Determine the object file names, based on whether this a debug or a release
+# build
+ifeq ($(MAKECMDGOALS),$(RELEASE))
+OBJDIR := $(OBJ)/$(RELEASE)
+OBJECT := $(addprefix $(OBJDIR)/, $(patsubst %.cpp,%.o, $(notdir \
+            $(filter %.cpp,$(SOURCE)))))
+CXXFLAGS += $(CXX_RELEASE_FLAGS)
+CCLIBFLAGS += $(LIB_RELEASE_FLAGS)
+$(OBJECT): | $(BIN)/$(RELEASE)
+else
+OBJDIR := $(OBJ)/$(DEBUG)
+OBJECT := $(addprefix $(OBJDIR)/, $(patsubst %.cpp,%.o, $(notdir \
+    $(filter %.cpp,$(SOURCE)))))
+CXXFLAGS += $(CXX_DEBUG_FLAGS)
+CCLIBFLAGS += $(LIB_DEBUG_FLAGS)
+$(OBJECT): | $(BIN)/$(DEBUG)
+endif
 
-archive.tgz:	$(SOURCEFILES) Makefile
-	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
+DEPENDENCIES := $(addprefix $(DEP)/, \
+                    $(patsubst %.cpp,%.d,$(notdir $(filter %.cpp,$(SOURCE)))))
+
+################################################################################
+######                          Pattern Rules                             ######
+################################################################################
+
+$(OBJDIR)/%.o: %.cpp
+	@printf "CPP $*.cpp\n"
+	@$(CXX) $(CXXFLAGS) -MMD -MT "$(DEPFILE).d $(OBJFILE).o" \
+		-MF "$(DEPFILE).d" -o $(OBJFILE).o -c $<
+	@sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+		-e '/^$$/ d' -e 's/$$/ :/' < $(DEPFILE).d >> $(DEPFILE).d
+
+-include $(DEPENDENCIES)
+
+################################################################################
+######                              Targets                               ######
+################################################################################
+
+.PHONY: debug release build build_debug build_release clean realclean
+
+TARGET := radradiosity
+
+.DEFAULT_GOAL := debug
+
+all: debug
+
+debug:	$(BIN)/$(DEBUG)/$(TARGET)
+release: $(BIN)/$(RELEASE)/$(TARGET)
+
+$(BIN)/$(RELEASE)/$(TARGET): $(OBJECT)
+	@printf "LINK $(BIN)/$(RELEASE)/$(TARGET)\n"
+	@$(CXX) -o $(BIN)/$(RELEASE)/$(TARGET) $(OBJECT) $(CCLIBFLAGS)
+
+$(BIN)/$(DEBUG)/$(TARGET): $(OBJECT)
+	@printf "LINK $(BIN)/$(DEBUG)/$(TARGET)\n"
+	@$(CXX) -o $(BIN)/$(DEBUG)/$(TARGET) $(OBJECT) $(CCLIBFLAGS)
+
+$(OBJECT): | $(OBJDIR)
+$(OBJECT): | $(DEP)
+
+$(OBJDIR):
+	$(MKDIR) $(OBJDIR)
+
+$(BIN)/$(RELEASE):
+	$(MKDIR) $(BIN)/$(RELEASE)
+
+$(BIN)/$(DEBUG):
+	$(MKDIR) $(BIN)/$(DEBUG)
+
+$(DEP):
+	$(MKDIR) $(DEP)
 
 clean:
-	-/bin/rm -f $(OBJFILES) Radiosity.o core
+	@printf "RM OBJECT FILES\n"
+	@$(RM) $(OBJ)/$(RELEASE)/*.o $(OBJ)/$(DEBUG)/*.o
+	@$(call RMDIR,$(OBJ)/$(DEBUG))
+	@$(call RMDIR,$(OBJ)/$(RELEASE))
+	@$(call RMDIR,$(OBJ))
 
 realclean:        clean
-	-/bin/rm -f Radiosity 
+	@printf "RM DEPENDENCY FILES\n"
+	@printf "RM EXECUTABLE FILES\n"
+	@$(RM) $(DEPENDENCIES)
+	@$(RM) $(BIN)/$(DEBUG)/$(TARGET)
+	@$(RM) $(BIN)/$(RELEASE)/$(TARGET)
+	@$(call RMDIR,$(BIN)/$(DEBUG))
+	@$(call RMDIR,$(BIN)/$(RELEASE))
+	@$(call RMDIR,$(BIN))
+	@$(call RMDIR,$(DEP))
+

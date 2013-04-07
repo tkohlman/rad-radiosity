@@ -12,7 +12,6 @@
 #define COLOR_H
 
 #include <iostream>
-using namespace std;
 
 namespace Radiosity {
 

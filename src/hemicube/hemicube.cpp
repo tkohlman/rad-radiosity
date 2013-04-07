@@ -16,7 +16,7 @@
 namespace Radiosity {
 
 // Constructor
-Hemicube::Hemicube(int subdivisions, vector<Rectangle*> *quads) :
+Hemicube::Hemicube(int subdivisions, std::vector<Rectangle*> *quads) :
     mSubdivisions(subdivisions), mShapes(quads) {
     BuildMultipliers();
     NormalizeMultipliers();
@@ -26,7 +26,7 @@ Hemicube::Hemicube(int subdivisions, vector<Rectangle*> *quads) :
 Hemicube::~Hemicube() {
 
     // Clean up dynamic memory
-    vector< vector<float>* >::iterator iter;
+    std::vector< std::vector<float>* >::iterator iter;
 
     // Left Multiplier
     for (iter = mLeftMultiplier->begin();
@@ -145,27 +145,27 @@ void Hemicube::TraceHemicube(Patch *patch) {
 }
 
 // GetLeftMultiplier
-const vector< vector<float>* > *Hemicube::GetLeftMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetLeftMultiplier() const {
     return mLeftMultiplier;
 }
 
 // GetTopMultiplier
-const vector< vector<float>* > *Hemicube::GetTopMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetTopMultiplier() const {
     return mTopMultiplier;
 }
 
 // GetRightMultiplier
-const vector< vector<float>* > *Hemicube::GetRightMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetRightMultiplier() const {
     return mRightMultiplier;
 }
 
 // GetBottomMultiplier
-const vector< vector<float>* > *Hemicube::GetBottomMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetBottomMultiplier() const {
     return mBottomMultiplier;
 }
 
 // GetFrontMultiplier
-const vector< vector<float>* > *Hemicube::GetFrontMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetFrontMultiplier() const {
     return mFrontMultiplier;
 }
 
@@ -252,16 +252,16 @@ void Hemicube::BuildMultipliers() {
 }
 
 // Build Multiplier
-vector< vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
+std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
     Point startingPoint, Vector patchNormal, Vector faceNormal, Vector row,
     Vector col, int numRows, int numCols) {
 
     // Create the multiplier vector with the determined number of rows and
     // columns.
-    vector< vector<float>* > *multiplier =
-        new vector< vector<float>* >();
+    std::vector< std::vector<float>* > *multiplier =
+        new std::vector< std::vector<float>* >();
     for (int i(0); i < numRows; ++i) {
-        multiplier->push_back(new vector<float>(numCols, 0));
+        multiplier->push_back(new std::vector<float>(numCols, 0));
     }
 
     // This algorithm fires rays through the surface pixels of the hemicube.
@@ -396,7 +396,7 @@ void Hemicube::NormalizeMultipliers() {
 }
 
 void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
-    Vector row, Vector col, vector< vector<float>* > *multiplier) {
+    Vector row, Vector col, std::vector< std::vector<float>* > *multiplier) {
 
     // The origin of the ray is the center point of the patch.
     Point origin = patch->GetCenter();
@@ -418,7 +418,7 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
     Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
 
-    vector<Patch*>::const_iterator iter;
+    std::vector<Patch*>::const_iterator iter;
 
     for (int r(0); r < multiplier->size(); ++r) {
 

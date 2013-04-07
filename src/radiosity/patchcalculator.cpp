@@ -22,9 +22,9 @@ PatchCalculator::~PatchCalculator() { }
 //
 // Subdivide
 //
-void PatchCalculator::Subdivide(vector<Rectangle*> *quads, vector<Patch*> *patches) {
+void PatchCalculator::Subdivide(std::vector<Rectangle*> *quads, std::vector<Patch*> *patches) {
 
-    vector<Rectangle*>::iterator iter = quads->begin();
+    std::vector<Rectangle*>::iterator iter = quads->begin();
     // For each quad
     for (; iter != quads->end(); ++iter) {
 
@@ -51,7 +51,7 @@ void PatchCalculator::Subdivide(vector<Rectangle*> *quads, vector<Patch*> *patch
         }
 
         // Create a two-dimensional vector to hold points
-        vector< vector<Point*> > points(size_i + 1, vector<Point*>(size_j + 1,
+        std::vector< std::vector<Point*> > points(size_i + 1, std::vector<Point*>(size_j + 1,
             (Point*)nullptr));
 
 

@@ -1,11 +1,11 @@
 ///
 /// @file FormCalculator.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 5 January 2012
 ///
 /// @description
-/// 	Collection of routines responsible for calculating form factors 
+/// 	Collection of routines responsible for calculating form factors
 ///     between patches.
 ///
 
@@ -28,8 +28,8 @@ public:
     /// @description
     ///     Constructor
     ///
-    FormCalculator(vector<Rectangle*> *quads);
-    
+    FormCalculator(std::vector<Rectangle*> *quads);
+
     ///
     /// @name ~FormCalculator
     ///
@@ -45,7 +45,7 @@ public:
     ///     Using the hemicube method, this function calculates the form
     ///     factors between all pairs of patches.
     ///
-    void CalculateFormFactors(vector<Patch*> *patches);
+    void CalculateFormFactors(std::vector<Patch*> *patches);
 
 private:
 
@@ -57,7 +57,7 @@ private:
     ///     each patch.
     ///
     Hemicube mHemicube;
-    
+
 };  // class FormCalculator
 
 }   // namespace Radiosity

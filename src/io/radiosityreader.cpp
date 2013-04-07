@@ -1,6 +1,6 @@
 ///
 /// @file RadiosityReader.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 1 January 2012
 ///
@@ -27,10 +27,10 @@ RadiosityReader::~RadiosityReader() {
 //
 // ParseObj
 //
-vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
+std::vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 
     int line_num(0);
-    
+
     // attempt to open the file
 	errno = 0;
 	FILE *file = fopen(filename, "r");
@@ -38,85 +38,85 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 		fprintf(stderr, "Could not open file: %s\n", filename);
 		exit(1);
 	}
-	
+
 	Color color;
-	
+
 	char *buffer = new char[INPUT_BUFFER_LEN];
-	
-	vector<Rectangle*> *quads = new vector<Rectangle*>();
-	vector<Point> vertices;
-	
+
+	std::vector<Rectangle*> *quads = new std::vector<Rectangle*>();
+	std::vector<Point> vertices;
+
 	// Clear the buffer
 	memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	// Read until EOF
 	while (fgets(buffer, INPUT_BUFFER_LEN, file)) {
-	
+
 	    // increment the line count
 	    ++line_num;
-	    
+
 	    // Parse the first character
 	    char *begin = strtok(buffer, " \n");
 
 	    float emission;
-	    
+
 	    if (strncmp(begin, "#", 1) == 0) {
-	    
+
 	        // comment - do nothing
-	        
+
 	    } else if (strcmp(begin, "e") == 0) {
-	    
+
 	        // color information
 	        char *ec = strtok(nullptr, " ");
 
 	        emission = strtof(ec, nullptr);;
-	    
+
 	    } else if (strcmp(begin, "c") == 0) {
-	    
+
 	        // color information
 	        char *rc = strtok(nullptr, " ");
 	        char *gc = strtok(nullptr, " ");
 	        char *bc = strtok(nullptr, " ");
-	        
+
 	        float r = strtof(rc, nullptr);
 	        float g = strtof(gc, nullptr);
 	        float b = strtof(bc, nullptr);
-	        
+
 	        color = Color(r, g, b);
-	    
+
 	    } else if (strcmp(begin, "v") == 0) {
-	        
+
 	        char *xc = strtok(nullptr, " ");
 	        char *yc = strtok(nullptr, " ");
 	        char *zc = strtok(nullptr, " ");
-	        
+
 	        if ((xc == nullptr) || (yc == nullptr) || (zc == nullptr)) {
-	            cout << "Error parsing tokens on line " << line_num << endl;
+	            std::cout << "Error parsing tokens on line " << line_num << std::endl;
 	            exit(1);
 	        }
-	        
+
 	        float x = strtof(xc, nullptr);
 	        float y = strtof(yc, nullptr);
 	        float z = strtof(zc, nullptr);
-	        
+
 	        Point p(x, y, z, color);
 
 	        vertices.push_back(p);
-	    
+
 	    } else if (strcmp(begin, "f") == 0) {
-	        
-	        // face definition - read new quad       
+
+	        // face definition - read new quad
 	        char *ac = strtok(nullptr, " ");
 	        char *bc = strtok(nullptr, " ");
 	        char *cc = strtok(nullptr, " ");
 	        char *dc = strtok(nullptr, " ");
 
-	        
+
 	        if ((ac == nullptr) || (bc == nullptr) || (cc == nullptr) || (dc == nullptr)) {
-	            cout << "Error parsing tokens on line " << line_num << endl;
+	            std::cout << "Error parsing tokens on line " << line_num << std::endl;
 	            exit(1);
 	        }
-	        
+
 	        int index_a = strtol(ac, nullptr, 0) - 1;
 	        int index_b = strtol(bc, nullptr, 0) - 1;
 	        int index_c = strtol(cc, nullptr, 0) - 1;
@@ -129,24 +129,24 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 	                                       vertices.at(index_d),
 	                                       color,
 	                                       emission));
-	        
+
 	    } else {
-	    
-	        cout << "Error detected in file " << filename << " on line " 
-	            << line_num << endl;
-	        cout << "Line is: " << buffer << endl;
+
+	        std::cout << "Error detected in file " << filename << " on line "
+	            << line_num << std::endl;
+	        std::cout << "Line is: " << buffer << std::endl;
 	        exit(1);
 	    }
-	    
+
     	// Clear the buffer
 	    memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	}
 
     // Close the file
     fclose(file);
     file = nullptr;
-    
+
     // Free the buffer
     delete [] buffer;
     buffer = nullptr;
@@ -156,12 +156,12 @@ vector<Rectangle*> *RadiosityReader::ParseObj(const char *filename) {
 
 //
 // ParsePat
-// 
-vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
+//
+std::vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 
 
     int line_num(0);
-    
+
     // attempt to open the file
 	errno = 0;
 	FILE *file = fopen(filename, "r");
@@ -169,46 +169,46 @@ vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 		fprintf(stderr, "Could not open file: %s\n", filename);
 		exit(1);
 	}
-	
+
 	Color color;
-	
+
 	char *buffer = new char[INPUT_BUFFER_LEN];
-	
-	vector<Patch*> *patches = new vector<Patch*>();
-	
+
+	std::vector<Patch*> *patches = new std::vector<Patch*>();
+
 	// Clear the buffer
 	memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	// Read until EOF
 	while (fgets(buffer, INPUT_BUFFER_LEN, file)) {
-	
+
 	    // increment the line count
 	    ++line_num;
-	    
+
 	    // Parse the first character
 	    char *begin = strtok(buffer, " \n");
-    
+
 	    if (strncmp(begin, "#", 1) == 0) {
-	    
+
 	        // comment - do nothing
-	        
+
 	    } else if (strcmp(begin, "c") == 0) {
-	    
+
 	        // color information
 	        char *rc = strtok(nullptr, " ");
 	        char *gc = strtok(nullptr, " ");
 	        char *bc = strtok(nullptr, " ");
-	        
+
 	        float r = strtof(rc, nullptr);
 	        float g = strtof(gc, nullptr);
 	        float b = strtof(bc, nullptr);
-	        
+
 	        color = Color(r, g, b);
-	    
+
 	    } else if (strcmp(begin, "p") == 0) {
-	    
+
 	        // patch definition - read new patch
-	        
+
 	        float Ax = strtof(strtok(nullptr, " "), nullptr);
 	        float Ay = strtof(strtok(nullptr, " "), nullptr);
 	        float Az = strtof(strtok(nullptr, " "), nullptr);
@@ -222,29 +222,29 @@ vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 	        float Dy = strtof(strtok(nullptr, " "), nullptr);
 	        float Dz = strtof(strtok(nullptr, " "), nullptr);
 	        float emission = strtof(strtok(nullptr, " "), nullptr);
-	        
+
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
 	        Point *C = new Point(Cx, Cy, Cz, color);
 	        Point *D = new Point(Dx, Dy, Dz, color);
-	        
+
 	        // Create the new patch
 	        Patch *p = new Patch(A, B, C, D, color, emission);
 	        patches->push_back(p);
-	    
+
 	    } else {
-	    
-	        cout << "Error detected in file " << filename << " on line " 
-	            << line_num << endl;
-	        cout << "Line is: " << buffer << endl;
+
+	        std::cout << "Error detected in file " << filename << " on line "
+	            << line_num << std::endl;
+	        std::cout << "Line is: " << buffer << std::endl;
 	        exit(1);
 	    }
- 
+
     	// Clear the buffer
 	    memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	}
-	
+
 	// Delete the buffer
 	delete [] buffer;
 
@@ -253,15 +253,15 @@ vector<Patch*> *RadiosityReader::ParsePat(const char *filename) {
 
     return patches;
 }
-    
+
 //
 // ParseLos
 //
-vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
+std::vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 
 
     int line_num(0);
-    
+
     // attempt to open the file
 	errno = 0;
 	FILE *file = fopen(filename, "r");
@@ -269,49 +269,49 @@ vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 		fprintf(stderr, "Could not open file: %s\n", filename);
 		exit(1);
 	}
-	
+
 	Color color;
-	
+
 	char *buffer = new char[INPUT_BUFFER_LEN];
-	
-	vector<Patch*> *patches = new vector<Patch*>();
-	
+
+	std::vector<Patch*> *patches = new std::vector<Patch*>();
+
 	// Create a parallel vector of vectors for line of sight values
-	vector< vector<int> > los;
-	
+	std::vector< std::vector<int> > los;
+
 	// Clear the buffer
 	memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	// Read until EOF
 	while (fgets(buffer, INPUT_BUFFER_LEN, file)) {
-	
+
 	    // increment the line count
 	    ++line_num;
-	    
+
 	    // Parse the first character
 	    char *begin = strtok(buffer, " \n");
-	    
+
 	    if (strncmp(begin, "#", 1) == 0) {
-	    
+
 	        // comment - do nothing
-	        
+
 	    } else if (strcmp(begin, "c") == 0) {
-	    
+
 	        // color information
 	        char *rc = strtok(nullptr, " ");
 	        char *gc = strtok(nullptr, " ");
 	        char *bc = strtok(nullptr, " ");
-	        
+
 	        float r = strtof(rc, nullptr);
 	        float g = strtof(gc, nullptr);
 	        float b = strtof(bc, nullptr);
-	        
+
 	        color = Color(r, g, b);
-	    
+
 	    } else if (strcmp(begin, "p") == 0) {
-	    
+
 	        // patch definition - read new patch
-	        
+
 	        float Ax = strtof(strtok(nullptr, " "), nullptr);
 	        float Ay = strtof(strtok(nullptr, " "), nullptr);
 	        float Az = strtof(strtok(nullptr, " "), nullptr);
@@ -325,74 +325,74 @@ vector<Patch*> *RadiosityReader::ParseLos(const char *filename) {
 	        float Dy = strtof(strtok(nullptr, " "), nullptr);
 	        float Dz = strtof(strtok(nullptr, " "), nullptr);
 	        float emission = strtof(strtok(nullptr, " "), nullptr);
-	           
+
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
 	        Point *C = new Point(Cx, Cy, Cz, color);
 	        Point *D = new Point(Dx, Dy, Dz, color);
-	        
+
 	        // Create the new patch
 	        Patch *p = new Patch(A, B, C, D, color, emission);
 	        patches->push_back(p);
-	        
+
 	        // Create the corresponding los vector
-	        vector<int> v;
+	        std::vector<int> v;
 	        los.push_back(v);
-	        
-	    
+
+
 	    } else if (strcmp(begin, "l") == 0) {
-	    
+
 	        // los definition (for the last patch read)
 
 	        // read the patch num
 	        int patch_num = strtol(strtok(nullptr, " "), nullptr, 0);
-	        
+
 	        // insert the patch num into the last los vector
 	        los.back().push_back(patch_num);
-	      	    
+
 	    } else {
-	    
-	        cout << "Error detected in file " << filename << " on line " 
-	            << line_num << endl;
-	        cout << "Line is: " << buffer << endl;
+
+	        std::cout << "Error detected in file " << filename << " on line "
+	            << line_num << std::endl;
+	        std::cout << "Line is: " << buffer << std::endl;
 	        exit(1);
 	    }
- 
+
     	// Clear the buffer
 	    memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	}
-	
+
 	// convert the los ids into pointers
-	vector< vector<int> >::iterator los_iter = los.begin();
-	
+	std::vector< std::vector<int> >::iterator los_iter = los.begin();
+
 	int index = 0;
 	for (; los_iter != los.end(); ++los_iter) {
-	
-	    vector<int>::iterator iditer = los_iter->begin();
-	    
+
+	    std::vector<int>::iterator iditer = los_iter->begin();
+
 	    for (; iditer != los_iter->end(); ++iditer) {
-	        
+
 	        patches->at(index)->AddViewablePatch(patches->at(*iditer));
-	        
+
 	    }
 	    ++index;
 	}
-	
+
 	// delete the buffer
 	delete [] buffer;
-	
+
     // Close the file
     fclose(file);
 
     return patches;
-}    
-    
-    
-vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
+}
+
+
+std::vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 
     int line_num(0);
-    
+
     // attempt to open the file
 	errno = 0;
 	FILE *file = fopen(filename, "r");
@@ -400,47 +400,47 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 		fprintf(stderr, "Could not open file: %s\n", filename);
 		exit(1);
 	}
-	
+
 	Color color;
-	
+
 	char *buffer = new char[INPUT_BUFFER_LEN];
-	
-	vector<Patch*> *patches = new vector<Patch*>();
-	
+
+	std::vector<Patch*> *patches = new std::vector<Patch*>();
+
 	// Create a parallel vector of vectors for line of sight values
-	vector< vector<int> > los;
-	
+	std::vector< std::vector<int> > los;
+
 	// Clear the buffer
 	memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	// Read until EOF
 	while (fgets(buffer, INPUT_BUFFER_LEN, file)) {
-	
+
 	    // increment the line count
 	    ++line_num;
 
 	    // Parse the first character
 	    char *begin = strtok(buffer, " \n");
-	    
+
 	    if (strncmp(begin, "#", 1) == 0) {
-	    
+
 	        // comment - do nothing
-	        
+
 	    } else if (strcmp(begin, "c") == 0) {
-	    
+
 	        // color information
 	        char *rc = strtok(nullptr, " ");
 	        char *gc = strtok(nullptr, " ");
 	        char *bc = strtok(nullptr, " ");
-	        
+
 	        float r = strtof(rc, nullptr);
 	        float g = strtof(gc, nullptr);
 	        float b = strtof(bc, nullptr);
-	        
+
 	        color = Color(r, g, b);
-	    
+
 	    } else if (strcmp(begin, "p") == 0) {
-	    
+
 	        // patch definition - read new patch
 
 	        float Ax = strtof(strtok(nullptr, " "), nullptr);
@@ -456,72 +456,72 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 	        float Dy = strtof(strtok(nullptr, " "), nullptr);
 	        float Dz = strtof(strtok(nullptr, " "), nullptr);
 	        float emission = strtof(strtok(nullptr, " "), nullptr);
-	        
+
 	        Point *A = new Point(Ax, Ay, Az, color);
 	        Point *B = new Point(Bx, By, Bz, color);
 	        Point *C = new Point(Cx, Cy, Cz, color);
 	        Point *D = new Point(Dx, Dy, Dz, color);
-	        
+
 	        // Create the new patch
 	        Patch *p = new Patch(A, B, C, D, color, emission);
 	        patches->push_back(p);
-	        
+
 	        // Create the corresponding los vector
-	        vector<int> v;
+	        std::vector<int> v;
 	        los.push_back(v);
-	        
-	    
+
+
 	    } else if (strcmp(begin, "l") == 0) {
-	    
+
 	        // los definition (for the last patch read)
 
 	        // read the patch num
 	        int patch_num = strtol(strtok(nullptr, " "), nullptr, 0);
-	        
+
 	        // insert the patch num into the last los vector
 	        los.back().push_back(patch_num);
-	      	    
+
 	    } else if (strcmp(begin, "f") == 0) {
-	    
+
 	        // formfactor (for the last patch read)
 
 	        // read the patch num
 	        float ff = strtof(strtok(nullptr, " "), nullptr);
-	        
+
 	        // insert the patch num into the last los vector
 	        patches->back()->GetFormFactors()->push_back(ff);
-	      	    
+
 	    } else {
-	    
-	        cout << "Error detected in file " << filename << " on line " 
-	            << line_num << endl;
-	        cout << "Line is: " << buffer << endl;
+
+	        std::cout << "Error detected in file " << filename << " on line "
+	            << line_num << std::endl;
+	        std::cout << "Line is: " << buffer << std::endl;
 	        exit(1);
 	    }
- 
+
     	// Clear the buffer
 	    memset(buffer, 0, INPUT_BUFFER_LEN);
-	
+
 	}
-	
+
 	// convert the los ids into pointers
-	vector< vector<int> >::iterator los_iter = los.begin();
-	
+	std::vector< std::vector<int> >::iterator los_iter = los.begin();
+
 	int index = 0;
 	for (; los_iter != los.end(); ++los_iter) {
-	
-	    vector<int>::iterator iditer = los_iter->begin();
-	    
+
+	    std::vector<int>::iterator iditer = los_iter->begin();
+
 	    for (; iditer != los_iter->end(); ++iditer) {
-	        
+
 	        patches->at(index)->AddViewablePatch(patches->at(*iditer));
-	        
+
 	    }
-	    
+
 	    if (patches->at(index)->GetViewablePatches()->size() !=
 	        patches->at(index)->GetFormFactors()->size()) {
- 
-	        while (patches->at(index)->GetFormFactors()->size() < 
+
+	        while (patches->at(index)->GetFormFactors()->size() <
 	            patches->at(index)->GetViewablePatches()->size()) {
 	            patches->at(index)->GetFormFactors()->push_back(0);
 	        }
@@ -529,21 +529,21 @@ vector<Patch*> *RadiosityReader::ParseFor(const char *filename) {
 
 	    ++index;
 	}
-	
+
 	// delete the buffer
 	delete [] buffer;
-	
+
 
     // Close the file
     fclose(file);
 
     return patches;
 
-}  
-    
-    
-    
+}
+
+
+
 }   // namespace Radiosity
-    
+
 
 

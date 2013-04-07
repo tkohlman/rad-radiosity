@@ -29,7 +29,7 @@ SightCalculator::~SightCalculator() {
 //
 // CalculateLOS
 //
-void SightCalculator::CalculateLOS(vector<Patch*> *patches) {
+void SightCalculator::CalculateLOS(std::vector<Patch*> *patches) {
     // Run quick elimination
     RunQuickElimination(patches);
 
@@ -40,16 +40,16 @@ void SightCalculator::CalculateLOS(vector<Patch*> *patches) {
 //
 // RunQuickElimination
 //
-void SightCalculator::RunQuickElimination(vector<Patch*> *patches) {
+void SightCalculator::RunQuickElimination(std::vector<Patch*> *patches) {
 
-    vector<Patch*>::iterator iter1 = patches->begin();
+    std::vector<Patch*>::iterator iter1 = patches->begin();
 
     // For each patch
     for (; iter1 != patches->end(); ++iter1) {
 
         // Look at every FOLLOWING patch (no need to compare twice) since
         // line of sight is reciprocal
-        vector<Patch*>::iterator iter2 = iter1 + 1;
+        std::vector<Patch*>::iterator iter2 = iter1 + 1;
 
         for (; iter2 != patches->end(); ++iter2) {
 
@@ -74,10 +74,10 @@ void SightCalculator::RunQuickElimination(vector<Patch*> *patches) {
 //
 // RunInterceptTest
 //
-void SightCalculator::RunInterceptTest(vector<Patch*> *patches) {
+void SightCalculator::RunInterceptTest(std::vector<Patch*> *patches) {
 
     // Loop over all patches
-    vector<Patch*>::const_iterator iter1 = patches->begin();
+    std::vector<Patch*>::const_iterator iter1 = patches->begin();
     for (; iter1 != patches->end(); ++iter1) {
 
         // Each patch has a line of sight vector that contains patches it would
@@ -88,7 +88,7 @@ void SightCalculator::RunInterceptTest(vector<Patch*> *patches) {
         Patch *patch1 = *iter1;
 
         // Loop over line of sight vector
-        vector<Patch*>::iterator iter2 = patch1->GetViewablePatches()->begin();
+        std::vector<Patch*>::iterator iter2 = patch1->GetViewablePatches()->begin();
         for (; iter2 != patch1->GetViewablePatches()->end(); ++iter2) {
 
             Patch *patch2 = *iter2;
@@ -102,7 +102,7 @@ void SightCalculator::RunInterceptTest(vector<Patch*> *patches) {
 
             // Look at all other patches in the line of sight vector to see if
             // another patch is closer along this ray
-            vector<Patch*>::const_iterator iter3 = patch1->GetViewablePatches()->begin();
+            std::vector<Patch*>::const_iterator iter3 = patch1->GetViewablePatches()->begin();
             for (; iter3 != patch1->GetViewablePatches()->end(); ++iter3) {
 
 

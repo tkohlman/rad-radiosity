@@ -1,6 +1,6 @@
 ///
 /// @file Rectangle.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -19,17 +19,16 @@
 
 
 #include <vector>
-using namespace std;
 
 namespace Radiosity {
 
 class Rectangle : public Shape {
 
 public:
-    
+
     ///
     /// @name Rectangle
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -45,17 +44,17 @@ public:
 
     ///
     /// @name ~Rectangle
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
     /// @return - void
     ///
     ~Rectangle();
-    
+
     ///
     /// @name Intersect
-    /// 
+    ///
     /// @description
     /// 	Determines if a ray intersects the rectangle.
     ///
@@ -65,47 +64,47 @@ public:
     ///           intersection occurs
     ///
     Point* Intersect(Vector v, Point o);
-    
+
     void Subdivide(float patchSize);
 
     ///
     /// @name A
-    /// 
+    ///
     /// @description
     /// 	Accessor for _a member variable.
     ///
     /// @return - A point of ABCD rectangle
-    ///    
+    ///
     Point A() const;
 
     ///
     /// @name B
-    /// 
+    ///
     /// @description
     /// 	Accessor for _b member variable.
     ///
     /// @return - B point of ABCD rectangle
-    ///    
+    ///
     Point B() const;
 
     ///
     /// @name C
-    /// 
+    ///
     /// @description
     /// 	Accessor for _c member variable.
     ///
     /// @return - C point of ABCD rectangle
-    ///    
+    ///
     Point C() const;
-    
+
     ///
     /// @name D
-    /// 
+    ///
     /// @description
     /// 	Accessor for _d member variable.
     ///
     /// @return - D point of ABCD rectangle
-    ///    
+    ///
     Point D() const;
 
     float emission;
@@ -119,8 +118,8 @@ private:
     ///		The first point of the rectangle.
     ///
     Point _a;
-    
-    
+
+
     ///
     /// @name _b
     ///
@@ -128,7 +127,7 @@ private:
     ///		The second point of the rectangle.
     ///
     Point _b;
-    
+
     ///
     /// @name _c
     ///
@@ -136,7 +135,7 @@ private:
     ///		The third point of the rectangle.
     ///
     Point _c;
-    
+
     ///
     /// @name _d
     ///
@@ -144,8 +143,8 @@ private:
     ///		The fourth point of the rectangle.
     ///
     Point _d;
-    
-    
+
+
     ///
     /// @name _normal
     ///
@@ -154,7 +153,7 @@ private:
     ///
     Vector _normal;
 
-    vector<Patch*> *mPatches;
+    std::vector<Patch*> *mPatches;
 
 
 };  // class Rectangle

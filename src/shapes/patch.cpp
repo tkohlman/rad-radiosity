@@ -44,10 +44,10 @@ Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) 
     mEmission = col * emission;
 
     // Create the patch line of sight vector
-    mViewablePatches = new vector<Patch*>;
+    mViewablePatches = new std::vector<Patch*>;
 
     // Create the form factor vector
-    mFormFactors = new vector<float>;
+    mFormFactors = new std::vector<float>;
 
     mReflectance = .85;
 
@@ -211,8 +211,8 @@ void Patch::AddViewablePatch(Patch *patch) {
 //
 void Patch::RemoveViewablePatch(Patch *patch) {
 
-    vector<Patch*>::iterator iter1 = mViewablePatches->begin();
-    vector<float>::iterator iter2 = mFormFactors->begin();
+    std::vector<Patch*>::iterator iter1 = mViewablePatches->begin();
+    std::vector<float>::iterator iter2 = mFormFactors->begin();
 
     for (; iter1 != mViewablePatches->end(); ++iter1) {
 

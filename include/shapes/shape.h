@@ -1,6 +1,6 @@
 ///
 /// @file Shape.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -16,7 +16,6 @@
 #include "vector.h"
 
 #include <cstdlib>
-using namespace std;
 
 namespace Radiosity {
 
@@ -26,7 +25,7 @@ public:
 
     ///
     /// @name Shape
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -37,7 +36,7 @@ public:
 
     ///
     /// @name ~Shape
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
@@ -47,7 +46,7 @@ public:
 
     ///
     /// @name GetColor
-    /// 
+    ///
     /// @description
     /// 	Accessor for _color member variable.
     ///
@@ -57,7 +56,7 @@ public:
 
     ///
     /// @name Intersect
-    /// 
+    ///
     /// @description
     /// 	Determines if a ray intersects the shape.
     ///

@@ -1,6 +1,6 @@
 ///
 /// @file RadiosityReader.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 1 January 2012
 ///
@@ -23,7 +23,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <assert.h>
-using namespace std;
 
 namespace Radiosity {
 
@@ -33,7 +32,7 @@ public:
 
     ///
     /// @name RadiosityReader
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -43,7 +42,7 @@ public:
 
     ///
     /// @name ~RadiosityReader
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
@@ -53,29 +52,29 @@ public:
 
     ///
     /// @name ParseObj
-    /// 
+    ///
     /// @description
     /// 	Parses a .obj file into a vector of quads.
     ///
     /// @param filename - name of .obj file
     /// @return - vector of quads
     ///
-    vector<Rectangle*> *ParseObj(const char *filename);
-    
+    std::vector<Rectangle*> *ParseObj(const char *filename);
+
     ///
     /// @name ParsePat
-    /// 
+    ///
     /// @description
     /// 	Parses a .pat file into a vector of patches.
     ///
     /// @param filename - name of input file
     /// @return - vector of patches
     ///
-    vector<Patch*> *ParsePat(const char *filename);
-    
+    std::vector<Patch*> *ParsePat(const char *filename);
+
     ///
     /// @name ParseLos
-    /// 
+    ///
     /// @description
     /// 	Parses a .los file into a vector of patches with line of sight
     ///     information.
@@ -83,11 +82,11 @@ public:
     /// @param filename - name of input file
     /// @return - vector of patches
     ///
-    vector<Patch*> *ParseLos(const char *filename);
-    
+    std::vector<Patch*> *ParseLos(const char *filename);
+
     ///
     /// @name ParseFor
-    /// 
+    ///
     /// @description
     /// 	Parses a .for file into a vector of patches with line of sight
     ///     information and form factor information.
@@ -95,7 +94,7 @@ public:
     /// @param filename - name of input file
     /// @return - vector of patches
     ///
-    vector<Patch*> *ParseFor(const char *filename);
+    std::vector<Patch*> *ParseFor(const char *filename);
 
 };  // class RadiosityReader
 

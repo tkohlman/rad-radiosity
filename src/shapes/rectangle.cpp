@@ -9,7 +9,6 @@
 ///
 
 #include "rectangle.h"
-using namespace std;
 
 namespace Radiosity {
 
@@ -68,7 +67,7 @@ void Rectangle::Subdivide(float patchSize)
 
 	if (mPatches == nullptr)
 	{
-		mPatches = new vector< Patch* >();
+		mPatches = new std::vector< Patch* >();
 
 		// Calculate the number of patches along one axis
 		float distance_i = _a.DistanceTo(_b);
@@ -91,7 +90,7 @@ void Rectangle::Subdivide(float patchSize)
 		}
 
 		// Create a two-dimensional vector to hold points
-		vector< vector<Point*> > points(size_i + 1, vector<Point*>(size_j + 1,
+		std::vector< std::vector<Point*> > points(size_i + 1, std::vector<Point*>(size_j + 1,
 			(Point*)nullptr));
 
 

@@ -1,6 +1,6 @@
 ///
 /// @file Radiosity.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 4 January
 ///
@@ -15,14 +15,12 @@
 #include "sightcalculator.h"
 #include "patchcalculator.h"
 #include "radiositycalculator.h"
-using namespace Radiosity;
 
 #include <GL/glut.h>
 
 #include <vector>
 #include <cstdlib>
 #include <iostream>
-using namespace std;
 
 #define WINDOW_WIDTH 512
 #define WINDOW_HEIGHT 512
@@ -37,7 +35,7 @@ bool show_normals = false;
 bool outline_patches = false;
 
 
-vector<Patch*> *Patches;
+std::vector<Radiosity::Patch*> *Patches;
 
 //
 // display
@@ -53,34 +51,34 @@ void display( void ) {
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
-    
+
     // Specify projection; this actually specifies the view Volume/
     // viewWindow
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity( );
-    
+
     glFrustum(-1, 1, -1, 1, 3, 256);
 
     // Specify viewing/camera/eye coordinate system
     // Observer on Z axis, looking at origin, up is Y axis
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity( );
-    
+
     gluLookAt( 0.0, -0.0, 100.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0 );
 
-    vector<Patch*>::iterator iter = Patches->begin();
-    
+    std::vector<Radiosity::Patch*>::iterator iter = Patches->begin();
+
     // Update the corner colors with the weighted average of the centers
     for (; iter != Patches->end(); ++iter) {
-        Patch *patch = *iter;
+        Radiosity::Patch *patch = *iter;
         patch->UpdateCornerColors();
     }
-        
+
     for (iter = Patches->begin(); iter != Patches->end(); ++iter) {
 
-        Patch *patch = *iter;
+        Radiosity::Patch *patch = *iter;
         patch->Draw();
-        
+
         if (outline_patches)
         {
         	patch->DrawOutline();
@@ -95,36 +93,36 @@ void display( void ) {
     // Show which patches can see each other
     if (show_los) {
         iter = Patches->begin();
-        
+
         glColor3f(1, 0, 0);
         int count = 0;
         // For each patch
         for (; iter != Patches->end(); ++iter) {
-        
-            vector<Patch*>::const_iterator cmp_iter = 
+
+            std::vector<Patch*>::const_iterator cmp_iter =
                 (*iter)->GetViewablePatches()->begin();
 
             ++count;
-            
+
             for (; cmp_iter != (*iter)->GetViewablePatches()->end();
                 ++cmp_iter) {
-            
+
                 Patch *patch1 = *iter;
                 Patch *patch2 = *cmp_iter;
-                
-                //cout << "drawing line!" << endl;
-            
+
+                //std::cout << "drawing line!" << std::endl;
+
                 // Draw the los line
                 glLineWidth(2);
                 glBegin(GL_LINES);
-     
-                glVertex3f(patch1->GetCenter().x(), patch1->GetCenter().y(), 
+
+                glVertex3f(patch1->GetCenter().x(), patch1->GetCenter().y(),
                     patch1->GetCenter().z());
-                glVertex3f(patch2->GetCenter().x(), patch2->GetCenter().y(), 
+                glVertex3f(patch2->GetCenter().x(), patch2->GetCenter().y(),
                     patch2->GetCenter().z());
-                
+
                 glEnd();
-            
+
             }
         }
     }
@@ -138,39 +136,39 @@ void display( void ) {
 // main
 //
 int main(int argc, char **argv) {
-    
+
     if (argc != 4) {
-        cout << "Usage: Radiosity <patch_size> <input file>" <<
-            " <num_iterations>" << endl;
+        std::cout << "Usage: Radiosity <patch_size> <input file>" <<
+            " <num_iterations>" << std::endl;
         exit(1);
     }
 
     int num_iterations = strtol(argv[3], nullptr, 0);
 
     float patch_size = strtof(argv[1], nullptr);
-    
-    vector<Rectangle*> *quads;
-    vector<Patch*> *patches = new vector<Patch*>();
-    
-    RadiosityReader myReader;
+
+    std::vector<Radiosity::Rectangle*> *quads;
+    std::vector<Radiosity::Patch*> *patches = new std::vector<Radiosity::Patch*>();
+
+    Radiosity::RadiosityReader myReader;
     quads = myReader.ParseObj(argv[2]);
 
     // Subdivide into patches
-    PatchCalculator patch_calculator(patch_size);
+    Radiosity::PatchCalculator patch_calculator(patch_size);
     patch_calculator.Subdivide(quads, patches);
-    
-    cout << "Using " << patches->size() << " patches..." << endl;
+
+    std::cout << "Using " << patches->size() << " patches..." << std::endl;
 
     // Calculate line of sight
-    SightCalculator sight_calculator;
+    Radiosity::SightCalculator sight_calculator;
     sight_calculator.CalculateLOS(patches);
 
     Patches = patches;
-    
-    FormCalculator form_calculator(quads);
+
+    Radiosity::FormCalculator form_calculator(quads);
     form_calculator.CalculateFormFactors(patches);
-    
-    RadiosityCalculator myRadiosityCalculator;
+
+    Radiosity::RadiosityCalculator myRadiosityCalculator;
     myRadiosityCalculator.CalculateRadiosity(patches, num_iterations);
 
     Patches = patches;
@@ -180,28 +178,27 @@ int main(int argc, char **argv) {
    	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
    	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
    	glutCreateWindow(WINDOW_TITLE);
-   	
+
    	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();	
+	glLoadIdentity();
 	gluOrtho2D(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT);
-   	
-   	// Callback functions 
+
+   	// Callback functions
    	glutDisplayFunc( display );
 
    	glutMainLoop( );
-  
+
     // Free up memory ---------------------------------------------------------
-    
-    vector<Patch*>::iterator patchIter = patches->begin();
+
+    std::vector<Radiosity::Patch*>::iterator patchIter = patches->begin();
     for (; patchIter != patches->end(); ++patchIter) {
         delete *patchIter;
         *patchIter = nullptr;
     }
-    
+
     delete patches;
     Patches = patches = nullptr;
 
-   	
     return 0;
 }
 

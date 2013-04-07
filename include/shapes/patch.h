@@ -1,6 +1,6 @@
 ///
 /// @file Patch.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 31 December 2011
 ///
@@ -16,20 +16,19 @@
 
 #include <vector>
 #include <map>
-using namespace std;
 
 namespace Radiosity {
 
 class Patch;
-typedef map< Patch*, vector< pair< Patch*, float > > > FormFactorMap;
+typedef std::map< Patch*, std::vector< std::pair< Patch*, float > > > FormFactorMap;
 
 class Patch {
 
 public:
-        
+
     ///
     /// @name Patch
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -42,18 +41,18 @@ public:
     /// @return - void
     ///
     Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission);
-    
+
     ///
     /// @name ~Patch
-    /// 
+    ///
     /// @description
     /// 	Destructor
     ///
     ~Patch();
-    
+
     ///
     /// @name Intersect
-    /// 
+    ///
     /// @description
     /// 	Determines if the ray defined by the vector, v, and the origin, o,
     ///     intersects the patch. If it does, it returns the distance along
@@ -67,27 +66,27 @@ public:
 
     ///
     /// @name AddViewablePatch
-    /// 
+    ///
     /// @description
     /// 	Record a patch with line of sight to this patch.
     ///
     /// @param patch - the patch with LOS
     ///
     void AddViewablePatch(Patch *patch);
-    
+
     ///
     /// @name RemoveViewablePatch
-    /// 
+    ///
     /// @description
     /// 	Remove a patch from the line of sight vector.
     ///
     /// @param patch - the patch to remove
     ///
     void RemoveViewablePatch(Patch *patch);
-    
+
     ///
     /// @name UpdateFormFactor
-    /// 
+    ///
     /// @description
     /// 	Update the form factor between this patch and one of the patches
     ///     with line of sight. The value is added to the current form factor
@@ -96,25 +95,25 @@ public:
     /// @param index - the index of the second patch into the los vector
     ///
     void UpdateFormFactor(int index, float formFactor);
-    
+
     ///
     /// @name UpdateIncidence
-    /// 
+    ///
     /// @description
     /// 	Update the incidence value of this patch.
     ///
     void UpdateIncidence();
-    
+
     ///
     /// @name UpdateExidence
-    /// 
+    ///
     /// @description
     /// 	Update the exidence value of this patch.
     ///
     void UpdateExidence();
-    
+
     /// @name UpdateCornerColors
-    /// 
+    ///
     /// @description
     /// 	Update the vertex colors for this patch
     ///
@@ -129,42 +128,42 @@ public:
     const Point& GetCenter() const;
 
     const Point* GetA() const;
-    
-    vector<Patch*> *GetViewablePatches() const;
-    vector<float> *GetFormFactors() const;
-    
+
+    std::vector<Patch*> *GetViewablePatches() const;
+    std::vector<float> *GetFormFactors() const;
+
     bool Contains(Point p) const;
 
     bool IsFacing(const Patch *other) const;
-    
+
 private:
-    
+
     Point *mA;
     Point *mB;
     Point *mC;
     Point *mD;
-    
+
     Color mColor;
 
     Vector mPatchNormal;
-    
+
     Point mCenterPoint;
 
     static int mNumPatches;
-    
+
 
     static Radiosity::FormFactorMap formFactorMap;
 
     float mArea;
-    
-    
+
+
     float mReflectance;
     Color mEmission;
     Color mIncidence;
     Color mExidence;
-    
-    vector<Patch*> *mViewablePatches;
-    vector<float> *mFormFactors;
+
+    std::vector<Patch*> *mViewablePatches;
+    std::vector<float> *mFormFactors;
 
 };  // class Patch
 
@@ -194,14 +193,14 @@ inline const Point* Patch::GetA() const {
 //
 // GetViewablePatches
 //
-inline vector<Patch*> *Patch::GetViewablePatches() const {
+inline std::vector<Patch*> *Patch::GetViewablePatches() const {
     return mViewablePatches;
 }
 
 //
 // GetFormFactors
 //
-inline vector<float> *Patch::GetFormFactors() const {
+inline std::vector<float> *Patch::GetFormFactors() const {
     return mFormFactors;
 }
 

@@ -1,6 +1,6 @@
 ///
 /// @file SightCalculator.h
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 6 January 2012
 ///
@@ -12,8 +12,6 @@
 #define SIGHT_CALCULATOR_H
 
 #include "patch.h"
-#include <stdlib.h>
-using namespace std;
 
 namespace Radiosity {
 
@@ -23,7 +21,7 @@ public:
 
     ///
     /// @name SightCalculator
-    /// 
+    ///
     /// @description
     /// 	Constructor
     ///
@@ -31,43 +29,43 @@ public:
 
     ///
     /// @name ~SightCalculator
-    /// 
+    ///
     /// @description
     /// 	Destructor
-    ///    
+    ///
     ~SightCalculator();
 
     ///
     /// @name CalculateLOS
-    /// 
+    ///
     /// @description
     /// 	Calculates los between all pairs of patches
     ///
     /// @param patches - vector of patches
     ///
-    void CalculateLOS(vector<Patch*> *patches);
+    void CalculateLOS(std::vector<Patch*> *patches);
 
 private:
 
     ///
     /// @name RunQuickElimination
-    /// 
+    ///
     /// @description
     /// 	Runs quick normal-based LOS elimination
     ///
     /// @param patches - vector of patches
     ///
-    void RunQuickElimination(vector<Patch*> *patches);
-    
+    void RunQuickElimination(std::vector<Patch*> *patches);
+
     ///
     /// @name RunInterceptTest
-    /// 
+    ///
     /// @description
     /// 	Calculates los between all pairs of patches using intercept tests
     ///
     /// @param patches - vector of patches
     ///
-    void RunInterceptTest(vector<Patch*> *patches);
+    void RunInterceptTest(std::vector<Patch*> *patches);
 
 
 };  // class SightCalculator

@@ -15,7 +15,6 @@
 
 #include <cmath>
 #include <iostream>
-using namespace std;
 
 namespace Radiosity {
 

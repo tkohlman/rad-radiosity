@@ -13,16 +13,21 @@
 #include "patch.h"
 #include <GL/glut.h>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
 int Patch::mNumPatches(0);
 
 //
 // Constructor
 //
-Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) :
-        mA(a), mB(b), mC(c), mD(d), mColor(col) {
-
+Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission):
+    mA(a),
+    mB(b),
+    mC(c),
+    mD(d),
+    mColor(col)
+{
     // Calculate the normal vector
     Vector AB(*mB, *mA);
     Vector BC(*mC, *mB);
@@ -54,28 +59,22 @@ Patch::Patch(Point *a, Point *b, Point *c, Point *d, Color col, float emission) 
     mIncidence = Color();
 
     mExidence = mEmission;
-
 }
 
-//
-// Destructor
-//
-Patch::~Patch() {
+Patch::~Patch()
+{
     delete mViewablePatches;
     delete mFormFactors;
 }
 
 void Patch::Draw()
 {
-
     glBegin(GL_QUADS);
 	mA->Draw();
 	mB->Draw();
 	mC->Draw();
 	mD->Draw();
     glEnd();
-
-	return;
 }
 
 void Patch::DrawOutline()
@@ -93,8 +92,6 @@ void Patch::DrawOutline()
 	mD->DrawNoColor();
 	mA->DrawNoColor();
     glEnd();
-
-	return;
 }
 
 void Patch::DrawNormal()
@@ -108,17 +105,13 @@ void Patch::DrawNormal()
 	mCenterPoint.DrawNoColor();
 	p.DrawNoColor();
 	glEnd();
-
-	return;
 }
 
-//
-// Intersect
-//
-float Patch::Intersect(Vector v, Point o) {
-
+float Patch::Intersect(Vector v, Point o)
+{
     // Check if vector is parallel to plane (no intercept)
-    if (dotProduct(v, mPatchNormal) == 0) {
+    if (dotProduct(v, mPatchNormal) == 0)
+    {
         return -1;
     }
 
@@ -148,11 +141,8 @@ float Patch::Intersect(Vector v, Point o) {
     return distance;
 }
 
-//
-// Contains
-//
-bool Patch::Contains(Point p) const {
-
+bool Patch::Contains(Point p) const
+{
     // Test to see if the point is inside the rectangle
     Vector CI(p, *mC);
     Vector BC(*mB, *mC);
@@ -166,7 +156,6 @@ bool Patch::Contains(Point p) const {
 
 bool Patch::IsFacing(const Patch *other) const
 {
-
 	if (this == other)
 	{
 		return false;
@@ -194,11 +183,8 @@ bool Patch::IsFacing(const Patch *other) const
 	return false;
 }
 
-//
-// AddViewablePatch
-//
-void Patch::AddViewablePatch(Patch *patch) {
-
+void Patch::AddViewablePatch(Patch *patch)
+{
     // Add the patch to the line of sight vector
     mViewablePatches->push_back(patch);
 
@@ -206,9 +192,6 @@ void Patch::AddViewablePatch(Patch *patch) {
     mFormFactors->push_back(0);
 }
 
-//
-// RemoveViewablePatch
-//
 void Patch::RemoveViewablePatch(Patch *patch)
 {
     std::vector<Patch*>::iterator iter1 = mViewablePatches->begin();
@@ -227,17 +210,11 @@ void Patch::RemoveViewablePatch(Patch *patch)
     mFormFactors->pop_back();
 }
 
-//
-// UpdateFormFactor
-//
-void Patch::UpdateFormFactor(int index, float formFactor) {
-
+void Patch::UpdateFormFactor(int index, float formFactor)
+{
     mFormFactors->at(index) += formFactor;
 }
 
-//
-// UpdateIncidence
-//
 void Patch::UpdateIncidence()
 {
     // Set incidence to zero so that the last iteration is not added
@@ -253,23 +230,17 @@ void Patch::UpdateIncidence()
     }
 }
 
-//
-// UpdateExidence
-//
-void Patch::UpdateExidence() {
-
+void Patch::UpdateExidence()
+{
 #ifdef COLOR_BLENDING
     mExidence = mIncidence * (mColor * mReflectance) + mEmission;
 #else
     mExidence = mIncidence * (mReflectance) + mEmission;
 #endif
-
 }
 
-//
-// UpdateCornerColors
-//
-void Patch::UpdateCornerColors() {
+void Patch::UpdateCornerColors()
+{
     mA->UpdateColor((mColor * mExidence));
     mB->UpdateColor((mColor * mExidence));
     mC->UpdateColor((mColor * mExidence));
@@ -277,5 +248,3 @@ void Patch::UpdateCornerColors() {
 }
 
 }   // namespace Radiosity
-
-

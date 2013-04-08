@@ -11,61 +11,58 @@
 #include "point.h"
 #include <GL/glut.h>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-//
-// Constructor
-//
-Point::Point(float x, float y, float z, Color c) :
-    x(x), y(y), z(z), mColor(c), mCount(1) {
+Point::Point(float x, float y, float z, Color c):
+    x(x),
+    y(y),
+    z(z),
+    mColor(c),
+    mCount(1)
+{
 }
 
-//
-// Constructor
-//
-Point::Point(float x, float y, float z) :
-    x(x), y(y), z(z), mCount(1) {
+Point::Point(float x, float y, float z):
+    x(x),
+    y(y),
+    z(z),
+    mCount(1)
+{
 }
 
-//
-// Copy Constructor
-//
-Point::Point(const Point& other) :
-    x(other.x), y(other.y), z(other.z), mColor(other.mColor),
-    mCount(other.mCount) {
+Point::Point(const Point& other):
+    x(other.x),
+    y(other.y),
+    z(other.z),
+    mColor(other.mColor),
+    mCount(other.mCount)
+{
 }
 
-//
-// Default Constructor
-//
-Point::Point() :
-    x(0), y(0), z(0), mCount(1) {
+Point::Point():
+    x(0),
+    y(0),
+    z(0),
+    mCount(1)
+{
 }
 
-//
-// Destructor
-//
-Point::~Point() {
+Point::~Point()
+{
 }
 
 void Point::Draw()
 {
     glColor3f(mColor.R(), mColor.G(), mColor.B());
     glVertex3f(x, y, z);
-
-	return;
 }
 
 void Point::DrawNoColor()
 {
     glVertex3f(x, y, z);
-
-	return;
 }
 
-//
-// UpdateColor
-//
 void Point::UpdateColor(const Color& color)
 {
     float reciprocal = 1.0 / mCount;
@@ -80,6 +77,3 @@ void Point::UpdateColor(const Color& color)
 }
 
 }   // namespace Radiosity
-
-
-

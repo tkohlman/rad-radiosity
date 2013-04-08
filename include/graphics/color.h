@@ -13,10 +13,11 @@
 
 #include <iostream>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Color {
-
+class Color
+{
 public:
 
     ///
@@ -128,69 +129,57 @@ private:
 
 };  // class Color
 
-
-//
-// operator*
-//
-inline Color Color::operator*(const Color& other) const {
+inline Color Color::operator*(const Color& other) const
+{
     return Color(_r * other._r, _g * other._g, _b * other._b);
 }
 
-
-//
-// operator*
-//
-inline Color Color::operator*(float scalar) const {
+inline Color Color::operator*(float scalar) const
+{
     return Color(_r * scalar, _g * scalar, _b * scalar);
 }
 
-//
-// operator+=
-//
-inline Color& Color::operator+=(const Color& other) {
+inline Color& Color::operator+=(const Color& other)
+{
     _r += other._r;
     _g += other._g;
     _b += other._b;
     return *this;
 }
 
-//
-// operator+
-//
-inline Color Color::operator+(const Color& other) const {
+inline Color Color::operator+(const Color& other) const
+{
     return Color(_r + other._r, _g + other._g, _b + other._b);
 }
 
-
-// R
-inline float Color::R() const {
+inline float Color::R() const
+{
     return (_r);
 }
 
-// G
-inline float Color::G() const {
+inline float Color::G() const
+{
     return (_g);
 }
 
-// B
-inline float Color::B() const {
+inline float Color::B() const
+{
     return (_b);
 }
 
-// operator=
-inline Color& Color::operator=(const Color& other) {
+inline Color& Color::operator=(const Color& other)
+{
     _r = other.R();
     _g = other.G();
     _b = other.B();
     return *this;
 }
 
-// operator==
-inline bool Color::operator==(const Color& other) const {
+inline bool Color::operator==(const Color& other) const
+{
     return ((_r == other.R()) && (_g == other.G()) && (_b == other.B()));
 }
 
 }   // namespace Radiosity
 
 #endif
-

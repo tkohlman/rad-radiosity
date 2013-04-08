@@ -22,9 +22,11 @@
 
 #define WIDTH 1.0
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Hemicube {
+class Hemicube
+{
 
 public:
 
@@ -224,11 +226,3 @@ private:
 }   // namesapce radiosity
 
 #endif
-
-
-
-
-
-
-
-

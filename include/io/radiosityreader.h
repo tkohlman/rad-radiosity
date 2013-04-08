@@ -24,10 +24,11 @@
 #include <stdio.h>
 #include <assert.h>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class RadiosityReader {
-
+class RadiosityReader
+{
 public:
 
     ///
@@ -101,5 +102,3 @@ public:
 }   // namespace Radiosity
 
 #endif
-
-

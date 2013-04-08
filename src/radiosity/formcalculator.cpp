@@ -11,31 +11,26 @@
 
 #include "formcalculator.h"
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-// Constructor
-FormCalculator::FormCalculator(std::vector<Rectangle*> *quads) :
-    mHemicube(25, quads) {
+FormCalculator::FormCalculator(std::vector<Rectangle*> *quads):
+    mHemicube(25, quads)
+{
 }
 
-// Destructor
-FormCalculator::~FormCalculator() {
-
+FormCalculator::~FormCalculator()
+{
 }
 
-// CalculateFormFactors
-void FormCalculator::CalculateFormFactors(std::vector<Patch*> *patches) {
-
+void FormCalculator::CalculateFormFactors(std::vector<Patch*> *patches)
+{
     std::vector<Patch*>::const_iterator iter = patches->begin();
 
-    for (; iter != patches->end(); ++iter) {
+    for (; iter != patches->end(); ++iter)
+    {
         mHemicube.TraceHemicube(*iter);
     }
 }
 
-
 }   // namespace Radiosity
-
-
-
-

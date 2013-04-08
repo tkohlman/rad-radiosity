@@ -17,10 +17,11 @@
 
 #include <cstdlib>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Shape {
-
+class Shape
+{
 public:
 
     ///

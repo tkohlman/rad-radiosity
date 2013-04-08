@@ -19,10 +19,11 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class RadiosityCalculator {
-
+class RadiosityCalculator
+{
 public:
 
     ///
@@ -42,8 +43,3 @@ public:
 }   // namespace Radiosity
 
 #endif
-
-
-
-
-

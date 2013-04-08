@@ -17,13 +17,14 @@
 #include <vector>
 #include <map>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
 class Patch;
 typedef std::map< Patch*, std::vector< std::pair< Patch*, float > > > FormFactorMap;
 
-class Patch {
-
+class Patch
+{
 public:
 
     ///
@@ -151,11 +152,9 @@ private:
 
     static int mNumPatches;
 
-
     static Radiosity::FormFactorMap formFactorMap;
 
     float mArea;
-
 
     float mReflectance;
     Color mEmission;
@@ -167,45 +166,31 @@ private:
 
 };  // class Patch
 
-
-
-//
-// GetNormal
-//
-inline const Vector& Patch::GetNormal() const {
+inline const Vector& Patch::GetNormal() const
+{
     return mPatchNormal;
 }
 
-//
-// GetCenter
-//
-inline const Point& Patch::GetCenter() const {
+inline const Point& Patch::GetCenter() const
+{
     return mCenterPoint;
 }
 
-//
-// GetA
-//
-inline const Point* Patch::GetA() const {
+inline const Point* Patch::GetA() const
+{
     return mA;
 }
 
-//
-// GetViewablePatches
-//
-inline std::vector<Patch*> *Patch::GetViewablePatches() const {
+inline std::vector<Patch*> *Patch::GetViewablePatches() const
+{
     return mViewablePatches;
 }
 
-//
-// GetFormFactors
-//
-inline std::vector<float> *Patch::GetFormFactors() const {
+inline std::vector<float> *Patch::GetFormFactors() const
+{
     return mFormFactors;
 }
 
 }   // namespace Radiosity
 
 #endif
-
-

@@ -13,59 +13,59 @@
 
 #include "hemicube.h"
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-// Constructor
 Hemicube::Hemicube(int subdivisions, std::vector<Rectangle*> *quads) :
-    mSubdivisions(subdivisions), mShapes(quads) {
+    mSubdivisions(subdivisions),
+    mShapes(quads)
+{
     BuildMultipliers();
     NormalizeMultipliers();
 }
 
-// Destructor
-Hemicube::~Hemicube() {
-
-    // Clean up dynamic memory
+Hemicube::~Hemicube()
+{
     std::vector< std::vector<float>* >::iterator iter;
 
     // Left Multiplier
-    for (iter = mLeftMultiplier->begin();
-         iter != mLeftMultiplier->end(); ++iter) {
+    for (iter = mLeftMultiplier->begin(); iter != mLeftMultiplier->end(); ++iter)
+    {
         delete *iter;
     }
     delete mLeftMultiplier;
 
     // Top Multiplier
-    for (iter = mTopMultiplier->begin();
-         iter != mTopMultiplier->end(); ++iter) {
+    for (iter = mTopMultiplier->begin(); iter != mTopMultiplier->end(); ++iter)
+    {
         delete *iter;
     }
     delete mTopMultiplier;
 
     // Right Multiplier
-    for (iter = mRightMultiplier->begin();
-         iter != mRightMultiplier->end(); ++iter) {
+    for (iter = mRightMultiplier->begin(); iter != mRightMultiplier->end(); ++iter)
+    {
         delete *iter;
     }
     delete mRightMultiplier;
 
     // Bottom Multiplier
-    for (iter = mBottomMultiplier->begin();
-         iter != mBottomMultiplier->end(); ++iter) {
+    for (iter = mBottomMultiplier->begin(); iter != mBottomMultiplier->end(); ++iter)
+    {
         delete *iter;
     }
     delete mBottomMultiplier;
 
     // Front Multiplier
-    for (iter = mFrontMultiplier->begin();
-         iter != mFrontMultiplier->end(); ++iter) {
+    for (iter = mFrontMultiplier->begin(); iter != mFrontMultiplier->end(); ++iter)
+    {
         delete *iter;
     }
     delete mFrontMultiplier;
 }
 
-void Hemicube::TraceHemicube(Patch *patch) {
-
+void Hemicube::TraceHemicube(Patch *patch)
+{
     // For the multipliers, we can just put the hemicube at the origin
     Point origin = patch->GetCenter();
 
@@ -141,34 +141,33 @@ void Hemicube::TraceHemicube(Patch *patch) {
     TraceFace(patch, p5, bottom_normal, right_normal, mFrontMultiplier);
 }
 
-// GetLeftMultiplier
-const std::vector< std::vector<float>* > *Hemicube::GetLeftMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetLeftMultiplier() const
+{
     return mLeftMultiplier;
 }
 
-// GetTopMultiplier
-const std::vector< std::vector<float>* > *Hemicube::GetTopMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetTopMultiplier() const
+{
     return mTopMultiplier;
 }
 
-// GetRightMultiplier
-const std::vector< std::vector<float>* > *Hemicube::GetRightMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetRightMultiplier() const
+{
     return mRightMultiplier;
 }
 
-// GetBottomMultiplier
-const std::vector< std::vector<float>* > *Hemicube::GetBottomMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetBottomMultiplier() const
+{
     return mBottomMultiplier;
 }
 
-// GetFrontMultiplier
-const std::vector< std::vector<float>* > *Hemicube::GetFrontMultiplier() const {
+const std::vector< std::vector<float>* > *Hemicube::GetFrontMultiplier() const
+{
     return mFrontMultiplier;
 }
 
-// Build Multipliers
-void Hemicube::BuildMultipliers() {
-
+void Hemicube::BuildMultipliers()
+{
     // For the multipliers, we can just put the hemicube at the origin
     Point origin(0.0, 0.0, 0.0);
 
@@ -227,37 +226,74 @@ void Hemicube::BuildMultipliers() {
     Vector front_normal = normal;
 
     // Build the left multiplier
-    mLeftMultiplier = BuildMultiplier(origin, p1, normal, left_normal,
-        bottom_normal, front_normal, mSubdivisions, mSubdivisions/2);
+    mLeftMultiplier = BuildMultiplier(origin,
+                                      p1,
+                                      normal,
+                                      left_normal,
+                                      bottom_normal,
+                                      front_normal,
+                                      mSubdivisions,
+                                      mSubdivisions/2);
 
     // Build the top multiplier
-    mTopMultiplier = BuildMultiplier(origin, p1, normal, top_normal,
-        front_normal, right_normal, mSubdivisions/2, mSubdivisions);
+    mTopMultiplier = BuildMultiplier(origin,
+                                     p1,
+                                     normal,
+                                     top_normal,
+                                     front_normal,
+                                     right_normal,
+                                     mSubdivisions/2,
+                                     mSubdivisions);
 
     // Build the right multiplier
-    mRightMultiplier = BuildMultiplier(origin, p6, normal, right_normal,
-        bottom_normal, negateVector(front_normal), mSubdivisions, mSubdivisions/2);
+    mRightMultiplier = BuildMultiplier(origin,
+                                       p6,
+                                       normal,
+                                       right_normal,
+                                       bottom_normal,
+                                       negateVector(front_normal),
+                                       mSubdivisions,
+                                       mSubdivisions/2);
 
     // Build the bottom multiplier
-    mBottomMultiplier = BuildMultiplier(origin, p8, normal, bottom_normal,
-        negateVector(front_normal), right_normal, mSubdivisions/2, mSubdivisions);
+    mBottomMultiplier = BuildMultiplier(origin,
+                                        p8,
+                                        normal,
+                                        bottom_normal,
+                                        negateVector(front_normal),
+                                        right_normal,
+                                        mSubdivisions/2,
+                                        mSubdivisions);
 
     // Build the front multiplier
-    mFrontMultiplier = BuildMultiplier(origin, p5, normal, front_normal,
-        bottom_normal, right_normal, mSubdivisions, mSubdivisions);
-
+    mFrontMultiplier = BuildMultiplier(origin,
+                                       p5,
+                                       normal,
+                                       front_normal,
+                                       bottom_normal,
+                                       right_normal,
+                                       mSubdivisions,
+                                       mSubdivisions);
 }
 
-// Build Multiplier
-std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
-    Point startingPoint, Vector patchNormal, Vector faceNormal, Vector row,
-    Vector col, int numRows, int numCols) {
+std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(
+    Point centerPoint,
+    Point startingPoint,
+    Vector patchNormal,
+    Vector faceNormal,
+    Vector row,
+    Vector col,
+    int numRows,
+    int numCols)
+{
 
     // Create the multiplier vector with the determined number of rows and
     // columns.
     std::vector< std::vector<float>* > *multiplier =
         new std::vector< std::vector<float>* >();
-    for (int i(0); i < numRows; ++i) {
+
+    for (int i(0); i < numRows; ++i)
+    {
         multiplier->push_back(new std::vector<float>(numCols, 0));
     }
 
@@ -278,12 +314,11 @@ std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
 
     Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
 
-    for (int r(0); r < numRows; ++r) {
-
+    for (int r(0); r < numRows; ++r)
+    {
         Point f = e;
-
-        for (int c(0); c < numCols; ++c) {
-
+        for (int c(0); c < numCols; ++c)
+        {
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, centerPoint);
             normalize(ray);
@@ -303,53 +338,61 @@ std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(Point centerPoint,
 
             // Update f
             f = col.Translate(f);
-
-        } // loop over column index
+        }
 
         // Update e
         e = row.Translate(e);
-
-    } // loop over row index
+    }
 
     return multiplier;
 }
 
-void Hemicube::NormalizeMultipliers() {
-
+void Hemicube::NormalizeMultipliers()
+{
     // Compute the sum of all the faces of all multipliers
     float sum = 0;
 
     // Left multiplier
-    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j)
+        {
             sum += mLeftMultiplier->at(i)->at(j);
         }
     }
 
     // Top multiplier
-    for (unsigned int i(0); i < mTopMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mTopMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j)
+        {
             sum += mTopMultiplier->at(i)->at(j);
         }
     }
 
     // Right multiplier
-    for (unsigned int i(0); i < mRightMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mRightMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j)
+        {
             sum += mRightMultiplier->at(i)->at(j);
         }
     }
 
     // Bottom multiplier
-    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j)
+        {
             sum += mBottomMultiplier->at(i)->at(j);
         }
     }
 
     // Front multiplier
-    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j)
+        {
             sum += mFrontMultiplier->at(i)->at(j);
         }
     }
@@ -357,44 +400,57 @@ void Hemicube::NormalizeMultipliers() {
     // Now divide by the sum
 
     // Left multiplier
-    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j)
+        {
             mLeftMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Top multiplier
-    for (unsigned int i(0); i < mTopMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mTopMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j)
+        {
             mTopMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Right multiplier
-    for (unsigned int i(0); i < mRightMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mRightMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j)
+        {
             mRightMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Bottom multiplier
-    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j)
+        {
             mBottomMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Front multiplier
-    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i) {
-        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i)
+    {
+        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j)
+        {
             mFrontMultiplier->at(i)->at(j) /= sum;
         }
     }
 }
 
-void Hemicube::TraceFace(Patch *patch, Point startingPoint,
-    Vector row, Vector col, std::vector< std::vector<float>* > *multiplier) {
-
+void Hemicube::TraceFace(Patch *patch,
+                         Point startingPoint,
+                         Vector row,
+                         Vector col,
+                         std::vector< std::vector<float>* > *multiplier)
+{
     // The origin of the ray is the center point of the patch.
     Point origin = patch->GetCenter();
 
@@ -412,23 +468,21 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint,
     // We will be looping in two directions.The outer loop determines the
     // row index of the multiplier table. The inner loop determines the column
     // index of the multiplier table.
-
     Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
 
     std::vector<Patch*>::const_iterator iter;
 
-    for (unsigned int r(0); r < multiplier->size(); ++r) {
-
+    for (unsigned int r(0); r < multiplier->size(); ++r)
+    {
         Point f = e;
 
-        for (unsigned int c(0); c < multiplier->at(r)->size(); ++c) {
-
+        for (unsigned int c(0); c < multiplier->at(r)->size(); ++c)
+        {
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, origin);
             normalize(ray);
 
             int index = 0;
-
 
             // Determine the shape that this ray intersects. Knowing the shape
             // eliminates the patches from all other objects (a significant
@@ -437,24 +491,23 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint,
 
             // find the closest intersection
             //int shape2 = 0;
-            unsigned int shape = 0;
-            for (; shape < mShapes->size(); ++shape) {
+            for (unsigned int shape = 0; shape < mShapes->size(); ++shape)
+            {
 
                 // Get the intersection point
                 Point *p = (mShapes->at(shape))->Intersect(ray, origin);
 
-                if (p != nullptr) {
-
+                if (p != nullptr)
+                {
                     // There was an intersection
-
-                    if (closest == nullptr) {
-
+                    if (closest == nullptr)
+                    {
                         // p is closest, by default
                         closest = p;
                         //shape2 = shape;
-
-                    } else if (origin.DistanceTo(*p) < origin.DistanceTo(*closest)) {
-
+                    }
+                    else if (origin.DistanceTo(*p) < origin.DistanceTo(*closest))
+                    {
                         // p is closer
                         closest = p;
                         //shape2 = shape;
@@ -466,14 +519,16 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint,
 
             // Fire the ray at every patch with line of sight
             for (iter = patch->GetViewablePatches()->begin();
-                 iter != patch->GetViewablePatches()->end(); ++iter) {
+                 iter != patch->GetViewablePatches()->end(); ++iter)
+            {
 
                 //cout << "parent id: " << (*iter)->GetParentId() << endl;
 
                 //if ((*iter)->GetParentId() == shape2) {
 
                     // If the ray intersects this patch
-                    if ((*iter)->Intersect(ray, origin) > 0) {
+                    if ((*iter)->Intersect(ray, origin) > 0)
+                    {
                     //if (closest != nullptr && (*iter)->Contains(*closest)) {
                         // Update the form factor for this patch
                         patch->UpdateFormFactor(index, multiplier->at(r)->at(c));
@@ -495,6 +550,4 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint,
     } // loop over row index
 }
 
-
 }   // namespace Radiosity
-

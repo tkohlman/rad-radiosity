@@ -13,10 +13,11 @@
 
 #include "patch.h"
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class SightCalculator {
-
+class SightCalculator
+{
 public:
 
     ///
@@ -73,8 +74,3 @@ private:
 }   // namespace Radiosity
 
 #endif
-
-
-
-
-

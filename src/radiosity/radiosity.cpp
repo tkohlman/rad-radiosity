@@ -34,14 +34,10 @@ bool show_los = false;
 bool show_normals = false;
 bool outline_patches = false;
 
-
 std::vector<Radiosity::Patch*> *Patches;
 
-//
-// display
-//
-void display( void ) {
-
+void display( void )
+{
     glEnable(GL_DEPTH_TEST);
 
     glClearColor(0, 0, 0, 1);
@@ -69,13 +65,14 @@ void display( void ) {
     std::vector<Radiosity::Patch*>::iterator iter = Patches->begin();
 
     // Update the corner colors with the weighted average of the centers
-    for (; iter != Patches->end(); ++iter) {
+    for (; iter != Patches->end(); ++iter)
+    {
         Radiosity::Patch *patch = *iter;
         patch->UpdateCornerColors();
     }
 
-    for (iter = Patches->begin(); iter != Patches->end(); ++iter) {
-
+    for (iter = Patches->begin(); iter != Patches->end(); ++iter)
+    {
         Radiosity::Patch *patch = *iter;
         patch->Draw();
 
@@ -91,22 +88,22 @@ void display( void ) {
     }
 /*
     // Show which patches can see each other
-    if (show_los) {
+    if (show_los)
+    {
         iter = Patches->begin();
 
         glColor3f(1, 0, 0);
         int count = 0;
         // For each patch
-        for (; iter != Patches->end(); ++iter) {
-
+        for (; iter != Patches->end(); ++iter)
+        {
             std::vector<Patch*>::const_iterator cmp_iter =
                 (*iter)->GetViewablePatches()->begin();
 
             ++count;
 
-            for (; cmp_iter != (*iter)->GetViewablePatches()->end();
-                ++cmp_iter) {
-
+            for (; cmp_iter != (*iter)->GetViewablePatches()->end(); ++cmp_iter)
+            {
                 Patch *patch1 = *iter;
                 Patch *patch2 = *cmp_iter;
 
@@ -122,7 +119,6 @@ void display( void ) {
                     patch2->GetCenter().z());
 
                 glEnd();
-
             }
         }
     }
@@ -131,13 +127,10 @@ void display( void ) {
     glutSwapBuffers();
 }
 
-
-//
-// main
-//
-int main(int argc, char **argv) {
-
-    if (argc != 4) {
+int main(int argc, char **argv)
+{
+    if (argc != 4)
+    {
         std::cout << "Usage: Radiosity <patch_size> <input file>" <<
             " <num_iterations>" << std::endl;
         exit(1);
@@ -191,7 +184,8 @@ int main(int argc, char **argv) {
     // Free up memory ---------------------------------------------------------
 
     std::vector<Radiosity::Patch*>::iterator patchIter = patches->begin();
-    for (; patchIter != patches->end(); ++patchIter) {
+    for (; patchIter != patches->end(); ++patchIter)
+    {
         delete *patchIter;
         *patchIter = nullptr;
     }
@@ -201,5 +195,3 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-
-

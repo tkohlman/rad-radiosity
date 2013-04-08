@@ -20,10 +20,11 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class PatchCalculator {
-
+class PatchCalculator
+{
 public:
 
     ///
@@ -70,4 +71,3 @@ private:
 }   // namesapce Radiosity
 
 #endif
-

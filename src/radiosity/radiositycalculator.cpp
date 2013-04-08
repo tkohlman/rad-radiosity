@@ -13,11 +13,9 @@
 namespace Radiosity
 {
 
-//
-// CalculateRadiosity
-//
 void RadiosityCalculator::CalculateRadiosity(std::vector<Patch*> *patches,
-    int numIterations) {
+                                             int numIterations)
+{
 
     // The progressive radiosity algorithm pseudocode is as follows:
     //
@@ -30,19 +28,16 @@ void RadiosityCalculator::CalculateRadiosity(std::vector<Patch*> *patches,
     //                  update the emission of patch q
     //              set emission of patch p to zero
     //
-
-    for (int iteration = 0; iteration < numIterations; ++iteration) {
-
-
-
+    for (int iteration = 0; iteration < numIterations; ++iteration)
+    {
         // Each patch collects light from the scene. Add up this light from
         // all visible patches to get the total incident light for this
         // iteration.
 
         std::vector<Patch*>::iterator piter = patches->begin();
 
-        for (; piter != patches->end(); ++piter) {
-
+        for (; piter != patches->end(); ++piter)
+        {
             // Update the patch's incidence
             (*piter)->UpdateIncidence();
         }
@@ -51,8 +46,8 @@ void RadiosityCalculator::CalculateRadiosity(std::vector<Patch*> *patches,
         // light is accounted for.
         piter = patches->begin();
 
-        for (; piter != patches->end(); ++piter) {
-
+        for (; piter != patches->end(); ++piter)
+        {
             // Update the patche's exidence
             (*piter)->UpdateExidence();
         }

@@ -17,13 +17,13 @@
 #include "vector.h"
 #include "patch.h"
 
-
 #include <vector>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Rectangle : public Shape {
-
+class Rectangle : public Shape
+{
 public:
 
     ///
@@ -38,7 +38,6 @@ public:
     /// @param d - fourth point in ABCD
     /// @param color - color of the rectangle
     /// @param emit - emissive quantity of the rectangle
-    /// @return - void
     ///
     Rectangle(Point a, Point b, Point c, Point d, Color color, float emit);
 
@@ -47,8 +46,6 @@ public:
     ///
     /// @description
     /// 	Destructor
-    ///
-    /// @return - void
     ///
     ~Rectangle();
 
@@ -119,7 +116,6 @@ private:
     ///
     Point _a;
 
-
     ///
     /// @name _b
     ///
@@ -144,7 +140,6 @@ private:
     ///
     Point _d;
 
-
     ///
     /// @name _normal
     ///
@@ -155,12 +150,8 @@ private:
 
     std::vector<Patch*> *mPatches;
 
-
 };  // class Rectangle
 
 }   // namespace Radiosity
 
 #endif
-
-
-

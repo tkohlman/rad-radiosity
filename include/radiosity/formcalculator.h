@@ -16,10 +16,11 @@
 #include "patch.h"
 #include "rectangle.h"
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class FormCalculator {
-
+class FormCalculator
+{
 public:
 
     ///
@@ -63,5 +64,3 @@ private:
 }   // namespace Radiosity
 
 #endif
-
-

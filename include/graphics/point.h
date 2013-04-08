@@ -16,10 +16,11 @@
 #include <cmath>
 #include <iostream>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Point {
-
+class Point
+{
     friend class Vector;
 
 public:
@@ -34,7 +35,6 @@ public:
     /// @param y - y-axis component of constructed point
     /// @param z - z-axis component of constructed point
     /// @param c - the color of the point
-    /// @return - void
     ///
     Point(float x, float y, float z, Color c);
 
@@ -47,7 +47,6 @@ public:
     /// @param x - x-axis component of constructed point
     /// @param y - y-axis component of constructed point
     /// @param z - z-axis component of constructed point
-    /// @return - void
     ///
     Point(float x, float y, float z);
 
@@ -58,7 +57,6 @@ public:
     /// 	Copy Constructor
     ///
     /// @param other - Point object to copy
-    /// @return - void
     ///
     Point(const Point& other);
 
@@ -67,8 +65,6 @@ public:
     ///
     /// @description
     /// 	Default Constructor
-    ///
-    /// @return - void
     ///
     Point();
 
@@ -152,15 +148,13 @@ private:
 
 };  // class Point
 
-//
-// GetColor
-//
-inline Color Point::GetColor() const {
+inline Color Point::GetColor() const
+{
     return (mColor);
 }
 
-// operator=
-inline Point& Point::operator=(const Point& other) {
+inline Point& Point::operator=(const Point& other)
+{
     x = other.x;
     y = other.y;
     z = other.z;
@@ -168,11 +162,8 @@ inline Point& Point::operator=(const Point& other) {
     return *this;
 }
 
-//
-// distance
-//
-inline float Point::DistanceTo(const Point& other) const {
-
+inline float Point::DistanceTo(const Point& other) const
+{
     return sqrt( pow(x - other.x, 2) +
                  pow(y - other.y, 2) +
                  pow(z - other.z, 2) );
@@ -181,5 +172,3 @@ inline float Point::DistanceTo(const Point& other) const {
 }   // namespace Radiosity
 
 #endif
-
-

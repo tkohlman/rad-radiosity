@@ -16,10 +16,11 @@
 #include <cmath>
 #include <iostream>
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-class Vector {
-
+class Vector
+{
     friend inline Vector add(const Vector& a, const Vector& b)
     {
         return Vector(a._x + b._x, a._y + b._y, a._z + b._z);
@@ -121,8 +122,3 @@ inline Point Vector::Translate(const Point &p)
 }   // namespace Radiosity
 
 #endif
-
-
-
-
-

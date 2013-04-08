@@ -1,6 +1,6 @@
 ///
 /// @file Shape.cpp
-/// 
+///
 /// @author	Thomas Kohlman
 /// @date 30 December 2011
 ///
@@ -10,19 +10,20 @@
 
 #include "shape.h"
 
-namespace Radiosity {
+namespace Radiosity
+{
 
-// Shape
-Shape::Shape(Color c) :
-    _color(c) {
+Shape::Shape(Color c):
+    _color(c)
+{
 }
 
-// ~Shape
-Shape::~Shape() {
+Shape::~Shape()
+{
 }
 
-// GetColor
-Color Shape::GetColor() {
+Color Shape::GetColor()
+{
     return (_color);
 }
 

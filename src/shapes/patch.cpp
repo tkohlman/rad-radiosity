@@ -209,15 +209,15 @@ void Patch::AddViewablePatch(Patch *patch) {
 //
 // RemoveViewablePatch
 //
-void Patch::RemoveViewablePatch(Patch *patch) {
-
+void Patch::RemoveViewablePatch(Patch *patch)
+{
     std::vector<Patch*>::iterator iter1 = mViewablePatches->begin();
-    std::vector<float>::iterator iter2 = mFormFactors->begin();
 
-    for (; iter1 != mViewablePatches->end(); ++iter1) {
-
+    for (; iter1 != mViewablePatches->end(); ++iter1)
+    {
         // Remove the viewable patch, and its form factor
-        if (*iter1 == patch) {
+        if (*iter1 == patch)
+        {
             iter1 = mViewablePatches->erase(iter1);
             break;
         }
@@ -238,15 +238,15 @@ void Patch::UpdateFormFactor(int index, float formFactor) {
 //
 // UpdateIncidence
 //
-void Patch::UpdateIncidence() {
-
+void Patch::UpdateIncidence()
+{
     // Set incidence to zero so that the last iteration is not added
     // in again.
     mIncidence = Color();
 
     // For every viewable patch
-    for (int index(0); index < mViewablePatches->size(); ++index) {
-
+    for (unsigned int index(0); index < mViewablePatches->size(); ++index)
+    {
         // Update the patch's incident light
         mIncidence += mViewablePatches->at(index)->mExidence *
             mFormFactors->at(index);
@@ -270,10 +270,10 @@ void Patch::UpdateExidence() {
 // UpdateCornerColors
 //
 void Patch::UpdateCornerColors() {
-    mA->UpdateColor((mColor * mExidence), mArea);
-    mB->UpdateColor((mColor * mExidence), mArea);
-    mC->UpdateColor((mColor * mExidence), mArea);
-    mD->UpdateColor((mColor * mExidence), mArea);
+    mA->UpdateColor((mColor * mExidence));
+    mB->UpdateColor((mColor * mExidence));
+    mC->UpdateColor((mColor * mExidence));
+    mD->UpdateColor((mColor * mExidence));
 }
 
 }   // namespace Radiosity

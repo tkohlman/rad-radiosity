@@ -66,15 +66,15 @@ void Point::DrawNoColor()
 //
 // UpdateColor
 //
-void Point::UpdateColor(const Color& color, float weight) {
-
+void Point::UpdateColor(const Color& color)
+{
     float reciprocal = 1.0 / mCount;
 
-    if (!(color == Color())) {
+    if (!(color == Color()))
+    {
         Color weighted_color = (mColor * mCount) + color;
 
         mColor = weighted_color * reciprocal;
-        //cout << "reciprocal " << reciprocal << endl;
         ++mCount;
     }
 }

@@ -124,24 +124,21 @@ void Hemicube::TraceHemicube(Patch *patch) {
     Vector front_normal = normal;
 
     // Trace left face
-    TraceFace(patch, p1, left_normal, bottom_normal, front_normal,
-        mLeftMultiplier);
+    TraceFace(patch, p1, bottom_normal, front_normal, mLeftMultiplier);
 
     // Trace top face
-    TraceFace(patch, p1, top_normal, front_normal, right_normal,
-        mTopMultiplier);
+    TraceFace(patch, p1, front_normal, right_normal, mTopMultiplier);
 
     // Trace right face
-    TraceFace(patch, p6, right_normal, bottom_normal, negateVector(front_normal),
+    TraceFace(patch, p6, bottom_normal, negateVector(front_normal),
         mRightMultiplier);
 
     // Trace bottom face
-    TraceFace(patch, p8, bottom_normal, negateVector(front_normal), right_normal,
+    TraceFace(patch, p8, negateVector(front_normal), right_normal,
         mBottomMultiplier);
 
     // Trace front face
-    TraceFace(patch, p5, front_normal, bottom_normal, right_normal,
-        mFrontMultiplier);
+    TraceFace(patch, p5, bottom_normal, right_normal, mFrontMultiplier);
 }
 
 // GetLeftMultiplier
@@ -323,36 +320,36 @@ void Hemicube::NormalizeMultipliers() {
     float sum = 0;
 
     // Left multiplier
-    for (int i(0); i < mLeftMultiplier->size(); ++i) {
-        for (int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
             sum += mLeftMultiplier->at(i)->at(j);
         }
     }
 
     // Top multiplier
-    for (int i(0); i < mTopMultiplier->size(); ++i) {
-        for (int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mTopMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
             sum += mTopMultiplier->at(i)->at(j);
         }
     }
 
     // Right multiplier
-    for (int i(0); i < mRightMultiplier->size(); ++i) {
-        for (int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mRightMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
             sum += mRightMultiplier->at(i)->at(j);
         }
     }
 
     // Bottom multiplier
-    for (int i(0); i < mBottomMultiplier->size(); ++i) {
-        for (int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
             sum += mBottomMultiplier->at(i)->at(j);
         }
     }
 
     // Front multiplier
-    for (int i(0); i < mFrontMultiplier->size(); ++i) {
-        for (int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
             sum += mFrontMultiplier->at(i)->at(j);
         }
     }
@@ -360,42 +357,42 @@ void Hemicube::NormalizeMultipliers() {
     // Now divide by the sum
 
     // Left multiplier
-    for (int i(0); i < mLeftMultiplier->size(); ++i) {
-        for (int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j) {
             mLeftMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Top multiplier
-    for (int i(0); i < mTopMultiplier->size(); ++i) {
-        for (int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mTopMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j) {
             mTopMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Right multiplier
-    for (int i(0); i < mRightMultiplier->size(); ++i) {
-        for (int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mRightMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j) {
             mRightMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Bottom multiplier
-    for (int i(0); i < mBottomMultiplier->size(); ++i) {
-        for (int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j) {
             mBottomMultiplier->at(i)->at(j) /= sum;
         }
     }
 
     // Front multiplier
-    for (int i(0); i < mFrontMultiplier->size(); ++i) {
-        for (int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
+    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i) {
+        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j) {
             mFrontMultiplier->at(i)->at(j) /= sum;
         }
     }
 }
 
-void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
+void Hemicube::TraceFace(Patch *patch, Point startingPoint,
     Vector row, Vector col, std::vector< std::vector<float>* > *multiplier) {
 
     // The origin of the ray is the center point of the patch.
@@ -420,11 +417,11 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
     std::vector<Patch*>::const_iterator iter;
 
-    for (int r(0); r < multiplier->size(); ++r) {
+    for (unsigned int r(0); r < multiplier->size(); ++r) {
 
         Point f = e;
 
-        for (int c(0); c < multiplier->at(r)->size(); ++c) {
+        for (unsigned int c(0); c < multiplier->at(r)->size(); ++c) {
 
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, origin);
@@ -439,8 +436,8 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
             Point *closest = nullptr;
 
             // find the closest intersection
-            int shape2 = 0;
-            int shape = 0;
+            //int shape2 = 0;
+            unsigned int shape = 0;
             for (; shape < mShapes->size(); ++shape) {
 
                 // Get the intersection point
@@ -454,13 +451,13 @@ void Hemicube::TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
 
                         // p is closest, by default
                         closest = p;
-                        shape2 = shape;
+                        //shape2 = shape;
 
                     } else if (origin.DistanceTo(*p) < origin.DistanceTo(*closest)) {
 
                         // p is closer
                         closest = p;
-                        shape2 = shape;
+                        //shape2 = shape;
                     }
                 }
             }

@@ -162,13 +162,12 @@ private:
     ///
     /// @param patch - the patch at the origin of the hemicube
     /// @param startingPoint - the origin of the hemicube
-    /// @param faceNormal - the patch normal
     /// @param row - a vector that specifies the row
     /// @param col - a vector that specifies the column
     /// @param multiplier - the precomputed multiplier to use for this face
     ///
-    void TraceFace(Patch *patch, Point startingPoint, Vector faceNormal,
-        Vector row, Vector col, std::vector< std::vector<float>* > *multiplier);
+    void TraceFace(Patch *patch, Point startingPoint, Vector row, Vector col,
+                   std::vector< std::vector<float>* > *multiplier);
 
     ///
     /// @name mSubdivisions

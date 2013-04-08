@@ -121,9 +121,8 @@ public:
     /// 	Average in the given color using the given weight
     ///
     /// @param color - the color to average in.
-    /// @param weight - the weight to use for this color
     ///
-    void UpdateColor(const Color& color, float weight);
+    void UpdateColor(const Color& color);
 
     void Draw();
     void DrawNoColor();

@@ -15,7 +15,7 @@ namespace Radiosity {
 // Rectangle
 Rectangle::Rectangle(Point a, Point b, Point c, Point d, Color color,
     float emit) :
-    Shape(color), _a(a), _b(b), _c(c), _d(d), emission(emit), mPatches(nullptr) {
+    Shape(color), emission(emit), _a(a), _b(b), _c(c), _d(d), mPatches(nullptr) {
 
     // calculate the normal vector
     Vector v1(b, a);

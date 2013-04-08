@@ -37,7 +37,7 @@ public:
     /// @param c - third point in ABCD
     /// @param d - fourth point in ABCD
     /// @param color - color of the rectangle
-    /// @param emission - emissive quantity of the rectangle
+    /// @param emit - emissive quantity of the rectangle
     /// @return - void
     ///
     Rectangle(Point a, Point b, Point c, Point d, Color color, float emit);

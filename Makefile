@@ -38,7 +38,7 @@ LDLIBS              := -lglut -lGLU -lGL -lXext -lX11 -lm
 CFLAGS              := $(patsubst %,-I%,$(INCLUDES))
 
 CXX_RELEASE_FLAGS   := $(CFLAGS) -std=c++0x
-CXX_DEBUG_FLAGS     := $(CXX_RELEASE_FLAGS) -ggdb -Wall -pedantic -Wextra
+CXX_DEBUG_FLAGS     := $(CXX_RELEASE_FLAGS) -ggdb -Wall -Werror -pedantic -Wextra
 CXXFLAGS             =
 
 LIB_RELEASE_FLAGS   := $(LIBDIRS) $(LDLIBS)

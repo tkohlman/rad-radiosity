@@ -12,6 +12,7 @@
 ///
 
 #include "hemicube.h"
+#include "multiplier.h"
 
 namespace Radiosity
 {
@@ -26,42 +27,11 @@ Hemicube::Hemicube(int subdivisions, std::vector<Rectangle*> *quads) :
 
 Hemicube::~Hemicube()
 {
-    std::vector< std::vector<float>* >::iterator iter;
-
-    // Left Multiplier
-    for (iter = mLeftMultiplier->begin(); iter != mLeftMultiplier->end(); ++iter)
-    {
-        delete *iter;
-    }
-    delete mLeftMultiplier;
-
-    // Top Multiplier
-    for (iter = mTopMultiplier->begin(); iter != mTopMultiplier->end(); ++iter)
-    {
-        delete *iter;
-    }
-    delete mTopMultiplier;
-
-    // Right Multiplier
-    for (iter = mRightMultiplier->begin(); iter != mRightMultiplier->end(); ++iter)
-    {
-        delete *iter;
-    }
-    delete mRightMultiplier;
-
-    // Bottom Multiplier
-    for (iter = mBottomMultiplier->begin(); iter != mBottomMultiplier->end(); ++iter)
-    {
-        delete *iter;
-    }
-    delete mBottomMultiplier;
-
-    // Front Multiplier
-    for (iter = mFrontMultiplier->begin(); iter != mFrontMultiplier->end(); ++iter)
-    {
-        delete *iter;
-    }
-    delete mFrontMultiplier;
+    delete m_left_multiplier;
+    delete m_top_multiplier;
+    delete m_right_multiplier;
+    delete m_bottom_multiplier;
+    delete m_front_multiplier;
 }
 
 void Hemicube::TraceHemicube(Patch *patch)
@@ -124,46 +94,21 @@ void Hemicube::TraceHemicube(Patch *patch)
     Vector front_normal = normal;
 
     // Trace left face
-    TraceFace(patch, p1, bottom_normal, front_normal, mLeftMultiplier);
+    TraceFace(patch, p1, bottom_normal, front_normal, m_left_multiplier);
 
     // Trace top face
-    TraceFace(patch, p1, front_normal, right_normal, mTopMultiplier);
+    TraceFace(patch, p1, front_normal, right_normal, m_top_multiplier);
 
     // Trace right face
     TraceFace(patch, p6, bottom_normal, negateVector(front_normal),
-        mRightMultiplier);
+        m_right_multiplier);
 
     // Trace bottom face
     TraceFace(patch, p8, negateVector(front_normal), right_normal,
-        mBottomMultiplier);
+        m_bottom_multiplier);
 
     // Trace front face
-    TraceFace(patch, p5, bottom_normal, right_normal, mFrontMultiplier);
-}
-
-const std::vector< std::vector<float>* > *Hemicube::GetLeftMultiplier() const
-{
-    return mLeftMultiplier;
-}
-
-const std::vector< std::vector<float>* > *Hemicube::GetTopMultiplier() const
-{
-    return mTopMultiplier;
-}
-
-const std::vector< std::vector<float>* > *Hemicube::GetRightMultiplier() const
-{
-    return mRightMultiplier;
-}
-
-const std::vector< std::vector<float>* > *Hemicube::GetBottomMultiplier() const
-{
-    return mBottomMultiplier;
-}
-
-const std::vector< std::vector<float>* > *Hemicube::GetFrontMultiplier() const
-{
-    return mFrontMultiplier;
+    TraceFace(patch, p5, bottom_normal, right_normal, m_front_multiplier);
 }
 
 void Hemicube::BuildMultipliers()
@@ -225,8 +170,7 @@ void Hemicube::BuildMultipliers()
     // vector of the patch. In this case, the patch is the x-y plane.
     Vector front_normal = normal;
 
-    // Build the left multiplier
-    mLeftMultiplier = BuildMultiplier(origin,
+    m_left_multiplier = new Multiplier(origin,
                                       p1,
                                       normal,
                                       left_normal,
@@ -236,7 +180,7 @@ void Hemicube::BuildMultipliers()
                                       mSubdivisions/2);
 
     // Build the top multiplier
-    mTopMultiplier = BuildMultiplier(origin,
+    m_top_multiplier = new Multiplier(origin,
                                      p1,
                                      normal,
                                      top_normal,
@@ -246,7 +190,7 @@ void Hemicube::BuildMultipliers()
                                      mSubdivisions);
 
     // Build the right multiplier
-    mRightMultiplier = BuildMultiplier(origin,
+    m_right_multiplier = new Multiplier(origin,
                                        p6,
                                        normal,
                                        right_normal,
@@ -256,7 +200,7 @@ void Hemicube::BuildMultipliers()
                                        mSubdivisions/2);
 
     // Build the bottom multiplier
-    mBottomMultiplier = BuildMultiplier(origin,
+    m_bottom_multiplier = new Multiplier(origin,
                                         p8,
                                         normal,
                                         bottom_normal,
@@ -266,7 +210,7 @@ void Hemicube::BuildMultipliers()
                                         mSubdivisions);
 
     // Build the front multiplier
-    mFrontMultiplier = BuildMultiplier(origin,
+    m_front_multiplier = new Multiplier(origin,
                                        p5,
                                        normal,
                                        front_normal,
@@ -276,180 +220,26 @@ void Hemicube::BuildMultipliers()
                                        mSubdivisions);
 }
 
-std::vector< std::vector<float>* > *Hemicube::BuildMultiplier(
-    Point centerPoint,
-    Point startingPoint,
-    Vector patchNormal,
-    Vector faceNormal,
-    Vector row,
-    Vector col,
-    int numRows,
-    int numCols)
-{
-
-    // Create the multiplier vector with the determined number of rows and
-    // columns.
-    std::vector< std::vector<float>* > *multiplier =
-        new std::vector< std::vector<float>* >();
-
-    for (int i(0); i < numRows; ++i)
-    {
-        multiplier->push_back(new std::vector<float>(numCols, 0));
-    }
-
-    // This algorithm fires rays through the surface pixels of the hemicube.
-    // The pixel width is defined by 1/N.
-    float dp = 1.0 / mSubdivisions;
-
-    // Make sure the row and column vectors are normalized. Then weight them
-    // by dp.
-    normalize(row);
-    normalize(col);
-    row = scalarMultiply(row, dp);
-    col = scalarMultiply(col, dp);
-
-    // We will be looping in two directions.The outer loop determines the
-    // row index of the multiplier table. The inner loop determines the column
-    // index of the multiplier table.
-
-    Point e = scalarMultiply(add(row, col), 0.5).Translate(startingPoint);
-
-    for (int r(0); r < numRows; ++r)
-    {
-        Point f = e;
-        for (int c(0); c < numCols; ++c)
-        {
-            // Create the ray, which depends on the face you are dealing with.
-            Vector ray(f, centerPoint);
-            normalize(ray);
-
-            // Compensate for the hemicube's shape. This involves multiplying
-            // the value by the dot product between the face normal and the
-            // ray.
-            float value = dotProduct(ray, faceNormal);
-
-            // Apply Lambert's cosine law, which says that the apparent
-            // brightness of a surface is proportional to the cosine of the
-            // angle between the surface normal and the direction of light.
-            value *= dotProduct(ray, patchNormal);
-
-            // Set the value in the multiplier map
-            multiplier->at(r)->at(c) = value;
-
-            // Update f
-            f = col.Translate(f);
-        }
-
-        // Update e
-        e = row.Translate(e);
-    }
-
-    return multiplier;
-}
-
 void Hemicube::NormalizeMultipliers()
 {
-    // Compute the sum of all the faces of all multipliers
-    float sum = 0;
+    float normalization_factor = m_left_multiplier->sum() +
+                                 m_top_multiplier->sum() +
+                                 m_right_multiplier->sum() +
+                                 m_bottom_multiplier->sum() +
+                                 m_front_multiplier->sum();
 
-    // Left multiplier
-    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j)
-        {
-            sum += mLeftMultiplier->at(i)->at(j);
-        }
-    }
-
-    // Top multiplier
-    for (unsigned int i(0); i < mTopMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j)
-        {
-            sum += mTopMultiplier->at(i)->at(j);
-        }
-    }
-
-    // Right multiplier
-    for (unsigned int i(0); i < mRightMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j)
-        {
-            sum += mRightMultiplier->at(i)->at(j);
-        }
-    }
-
-    // Bottom multiplier
-    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j)
-        {
-            sum += mBottomMultiplier->at(i)->at(j);
-        }
-    }
-
-    // Front multiplier
-    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j)
-        {
-            sum += mFrontMultiplier->at(i)->at(j);
-        }
-    }
-
-    // Now divide by the sum
-
-    // Left multiplier
-    for (unsigned int i(0); i < mLeftMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mLeftMultiplier->at(i)->size(); ++j)
-        {
-            mLeftMultiplier->at(i)->at(j) /= sum;
-        }
-    }
-
-    // Top multiplier
-    for (unsigned int i(0); i < mTopMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mTopMultiplier->at(i)->size(); ++j)
-        {
-            mTopMultiplier->at(i)->at(j) /= sum;
-        }
-    }
-
-    // Right multiplier
-    for (unsigned int i(0); i < mRightMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mRightMultiplier->at(i)->size(); ++j)
-        {
-            mRightMultiplier->at(i)->at(j) /= sum;
-        }
-    }
-
-    // Bottom multiplier
-    for (unsigned int i(0); i < mBottomMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mBottomMultiplier->at(i)->size(); ++j)
-        {
-            mBottomMultiplier->at(i)->at(j) /= sum;
-        }
-    }
-
-    // Front multiplier
-    for (unsigned int i(0); i < mFrontMultiplier->size(); ++i)
-    {
-        for (unsigned int j(0); j < mFrontMultiplier->at(i)->size(); ++j)
-        {
-            mFrontMultiplier->at(i)->at(j) /= sum;
-        }
-    }
+    m_left_multiplier->normalize(normalization_factor);
+    m_top_multiplier->normalize(normalization_factor);
+    m_right_multiplier->normalize(normalization_factor);
+    m_bottom_multiplier->normalize(normalization_factor);
+    m_front_multiplier->normalize(normalization_factor);
 }
 
 void Hemicube::TraceFace(Patch *patch,
                          Point startingPoint,
                          Vector row,
                          Vector col,
-                         std::vector< std::vector<float>* > *multiplier)
+                         Multiplier *multiplier)
 {
     // The origin of the ray is the center point of the patch.
     Point origin = patch->GetCenter();
@@ -472,11 +262,11 @@ void Hemicube::TraceFace(Patch *patch,
 
     std::vector<Patch*>::const_iterator iter;
 
-    for (unsigned int r(0); r < multiplier->size(); ++r)
+    for (unsigned int r(0); r < multiplier->height(); ++r)
     {
         Point f = e;
 
-        for (unsigned int c(0); c < multiplier->at(r)->size(); ++c)
+        for (unsigned int c(0); c < multiplier->width(); ++c)
         {
             // Create the ray, which depends on the face you are dealing with.
             Vector ray(f, origin);
@@ -531,7 +321,7 @@ void Hemicube::TraceFace(Patch *patch,
                     {
                     //if (closest != nullptr && (*iter)->Contains(*closest)) {
                         // Update the form factor for this patch
-                        patch->UpdateFormFactor(index, multiplier->at(r)->at(c));
+                        patch->UpdateFormFactor(index, multiplier->weight_at(r, c));
                         break;
                     }
                 //}

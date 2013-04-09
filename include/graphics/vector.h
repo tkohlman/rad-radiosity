@@ -18,6 +18,8 @@
 
 namespace Radiosity
 {
+class Vector;
+void normalize(Vector &v);
 
 class Vector
 {

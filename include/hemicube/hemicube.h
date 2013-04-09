@@ -25,6 +25,8 @@
 namespace Radiosity
 {
 
+class Multiplier;
+
 class Hemicube
 {
 
@@ -58,56 +60,6 @@ public:
     /// @param patch - the patch indicating where to position the hemicube
     ///
     void TraceHemicube(Patch *patch);
-
-    ///
-    /// @name GetLeftMultiplier
-    ///
-    /// @description
-    /// 	Accessor for the left face multiplier.
-    ///
-    /// @return - the left face multiplier
-    ///
-    const std::vector< std::vector<float>* > *GetLeftMultiplier() const;
-
-    ///
-    /// @name GetTopMultiplier
-    ///
-    /// @description
-    /// 	Accessor for the top face multiplier.
-    ///
-    /// @return - the top face multiplier
-    ///
-    const std::vector< std::vector<float>* > *GetTopMultiplier() const;
-
-    ///
-    /// @name GetRightMultiplier
-    ///
-    /// @description
-    /// 	Accessor for the right face multiplier.
-    ///
-    /// @return - the right face multiplier
-    ///
-    const std::vector< std::vector<float>* > *GetRightMultiplier() const;
-
-    ///
-    /// @name GetBottomMultiplier
-    ///
-    /// @description
-    /// 	Accessor for the bottom face multiplier.
-    ///
-    /// @return - the bottom face multiplier
-    ///
-    const std::vector< std::vector<float>* > *GetBottomMultiplier() const;
-
-    ///
-    /// @name GetFrontMultiplier
-    ///
-    /// @description
-    /// 	Accessor for the front face multiplier.
-    ///
-    /// @return - the front face multipler
-    ///
-    const std::vector< std::vector<float>* > *GetFrontMultiplier() const;
 
 private:
 
@@ -171,6 +123,9 @@ private:
     void TraceFace(Patch *patch, Point startingPoint, Vector row, Vector col,
                    std::vector< std::vector<float>* > *multiplier);
 
+    void TraceFace(Patch *patch, Point startingPoint, Vector row, Vector col,
+                   Multiplier *multiplier);
+
     ///
     /// @name mSubdivisions
     ///
@@ -179,47 +134,13 @@ private:
     ///
     int mSubdivisions;
 
-    ///
-    /// @name mLeftMultiplier
-    ///
-    /// @description
-    ///		Energy values for the left face of the hemicube.
-    ///
-    std::vector< std::vector<float>* > *mLeftMultiplier;
-
-    ///
-    /// @name mTopMultiplier
-    ///
-    /// @description
-    ///		Energy values for the top face of the hemicube.
-    ///
-    std::vector< std::vector<float>* > *mTopMultiplier;
-
-    ///
-    /// @name mRightMultiplier
-    ///
-    /// @description
-    ///		Energy values for the right face of the hemicube.
-    ///
-    std::vector< std::vector<float>* > *mRightMultiplier;
-
-    ///
-    /// @name mBottomMultiplier
-    ///
-    /// @description
-    ///		Energy values for the bottom face of the hemicube.
-    ///
-    std::vector< std::vector<float>* > *mBottomMultiplier;
-
-    ///
-    /// @name mFrontMultipliers
-    ///
-    /// @description
-    ///		Energy values for the front face of the hemicube.
-    ///
-    std::vector< std::vector<float>* > *mFrontMultiplier;
-
     std::vector<Rectangle*> *mShapes;
+
+    Multiplier *m_left_multiplier;
+    Multiplier *m_top_multiplier;
+    Multiplier *m_right_multiplier;
+    Multiplier *m_bottom_multiplier;
+    Multiplier *m_front_multiplier;
 
 };  // class Hemicube
 
